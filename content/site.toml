@@ -880,3 +880,17 @@ time = "O(V + E)"
 space = "O(V + E)"
 use_when = "Ordering tasks with prerequisites, or checking a directed graph for cycles."
 gotcha = "Course Schedule gives pairs as `[course, prerequisite]`, so the edge is `(prerequisite, course)`."
+
+[[part.section]]
+id = "dijkstra"
+title = "Dijkstra's shortest path"
+
+[[part.section.entry]]
+id = "dijkstra-template"
+title = "Dijkstra with a heap"
+aliases = ["shortest path", "weighted graph", "priority queue", "network delay", "cheapest route", "single source shortest path"]
+code = ["algorithms/dijkstra.py:dijkstra"]
+time = "O((V + E) log V)"
+space = "O(V + E)"
+use_when = "Shortest path from one source when edges have different non-negative weights. Equal weights: plain BFS is enough."
+gotcha = "Negative weights break Dijkstra. To rebuild the path, store `previous[neighbor] = node` whenever a distance improves."
