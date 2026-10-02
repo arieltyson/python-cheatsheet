@@ -127,6 +127,26 @@ def render_part(part: Part) -> str:
     )
 
 
+def toc_link(anchor: str, title: str) -> str:
+    return f'<a href="#{anchor}">{inline(title)}</a>'
+
+
+def render_toc(site: Site) -> str:
+    parts = "".join(
+        f"<li>{toc_link(part.id, part.title)}<ol>"
+        + "".join(
+            f"<li>{toc_link(section.id, section.title)}</li>"
+            for section in part.sections
+        )
+        + "</ol></li>"
+        for part in site.parts
+    )
+    return (
+        '<nav class="toc" aria-label="Contents">'
+        f'<p class="toc-title">Contents</p><ol>{parts}</ol></nav>'
+    )
+
+
 def render_styles() -> str:
     tokens = load_tokens(WEB / "tokens.toml")
     styles = (WEB / "styles.css").read_text(encoding="utf-8")
@@ -139,6 +159,8 @@ def render_page(site: Site) -> str:
         template,
         {
             "styles": render_styles(),
+            "toc": render_toc(site),
+            "script": (WEB / "app.js").read_text(encoding="utf-8"),
             "content": "\n".join(render_part(p) for p in site.parts),
         },
     )
