@@ -527,3 +527,74 @@ aliases = ["merge linked lists", "dummy node", "merge step"]
 code = ["structures/linked_list.py:merge_sorted"]
 time = "O(n + m)"
 space = "O(1)"
+
+[[part.section]]
+id = "binary-tree"
+title = "Binary tree & BST"
+
+[[part.section.entry]]
+id = "tree-node"
+title = "TreeNode"
+aliases = ["binary tree node", "tree class"]
+code = ["structures/binary_tree.py:TreeNode"]
+
+[[part.section.entry]]
+id = "build-tree"
+title = "Build a tree from a level-order list"
+aliases = ["array to tree", "leetcode tree input", "test helper", "deserialize"]
+code = ["structures/binary_tree.py:build_tree"]
+time = "O(n)"
+space = "O(n)"
+use_when = "Testing your own tree solution with LeetCode-style input like `[1, None, 2, 3]`."
+
+[[part.section.entry]]
+id = "tree-traversals"
+title = "Preorder, inorder & postorder"
+aliases = ["dfs traversal", "tree walk", "recursive traversal", "sorted order of bst"]
+code = ["structures/binary_tree.py:traversals"]
+time = "O(n)"
+space = "O(h) stack, h = height"
+gotcha = "Inorder traversal of a BST visits values in sorted order."
+
+[[part.section.entry]]
+id = "inorder-iterative"
+title = "Inorder without recursion"
+aliases = ["iterative traversal", "explicit stack", "kth smallest in bst"]
+code = ["structures/binary_tree.py:inorder_iterative"]
+time = "O(n)"
+space = "O(h)"
+use_when = "The tree can be deeper than Python's default recursion limit of 1,000, or you need to stop early."
+
+[[part.section.entry]]
+id = "level-order"
+title = "Level order (BFS)"
+aliases = ["breadth first", "levels", "right side view", "zigzag", "tree bfs"]
+code = ["structures/binary_tree.py:level_order"]
+time = "O(n)"
+space = "O(w), w = widest level"
+gotcha = "Read `len(queue)` before the inner loop: that is the size of the current level."
+
+[[part.section.entry]]
+id = "max-depth"
+title = "Maximum depth"
+aliases = ["height", "tree height", "depth of tree"]
+code = ["structures/binary_tree.py:max_depth"]
+time = "O(n)"
+space = "O(h)"
+
+[[part.section.entry]]
+id = "bst-search-insert"
+title = "BST search & insert"
+aliases = ["binary search tree", "lookup", "add to bst"]
+code = ["structures/binary_tree.py:bst_search", "structures/binary_tree.py:bst_insert"]
+time = "O(h): O(log n) balanced, O(n) skewed"
+space = "O(1) search, O(h) insert"
+
+[[part.section.entry]]
+id = "validate-bst"
+title = "Validate a BST"
+aliases = ["is valid bst", "bounds", "min max range"]
+code = ["structures/binary_tree.py:is_valid_bst"]
+time = "O(n)"
+space = "O(h)"
+gotcha = "Comparing a node only with its children is wrong. Every node must fit the bounds from all its ancestors."
