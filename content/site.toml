@@ -690,3 +690,91 @@ code = ["algorithms/binary_search.py:first_true", "algorithms/binary_search.py:m
 time = "O(n log m), m = size of the answer range"
 space = "O(1)"
 use_when = "\"Find the smallest x such that ...\" and if x works, every larger x works too."
+
+[[part.section]]
+id = "two-pointers"
+title = "Two pointers"
+
+[[part.section.entry]]
+id = "pair-sum-sorted"
+title = "Pair with a target sum (sorted)"
+aliases = ["two sum sorted", "two sum ii", "opposite ends", "converging pointers"]
+code = ["algorithms/two_pointers.py:pair_with_sum"]
+time = "O(n)"
+space = "O(1)"
+use_when = "The input is sorted and you need a pair. For unsorted input use a dict of seen values instead."
+
+[[part.section.entry]]
+id = "three-sum"
+title = "Three sum"
+aliases = ["3sum", "triplets", "sum to zero", "skip duplicates"]
+code = ["algorithms/two_pointers.py:three_sum"]
+time = "O(n^2)"
+space = "O(n) for the sorted copy"
+gotcha = "Skip equal neighbours for the first value and after each match, or the output repeats triplets."
+
+[[part.section.entry]]
+id = "remove-duplicates"
+title = "Remove duplicates in place"
+aliases = ["read write pointer", "dedupe sorted array", "in place", "fast slow pointer"]
+code = ["algorithms/two_pointers.py:remove_duplicates"]
+time = "O(n)"
+space = "O(1)"
+
+[[part.section.entry]]
+id = "valid-palindrome"
+title = "Valid palindrome"
+aliases = ["palindrome check", "ignore punctuation", "reverse compare"]
+code = ["algorithms/two_pointers.py:is_palindrome"]
+time = "O(n)"
+space = "O(1)"
+
+[[part.section]]
+id = "sliding-window"
+title = "Sliding window"
+
+[[part.section.entry]]
+id = "fixed-window"
+title = "Fixed-size window"
+aliases = ["window of size k", "moving sum", "max sum subarray of size k", "rolling"]
+code = ["algorithms/sliding_window.py:max_window_sum"]
+time = "O(n)"
+space = "O(1)"
+
+[[part.section.entry]]
+id = "variable-window"
+title = "Variable window: grow, then shrink while invalid"
+aliases = ["at most k distinct", "longest substring", "minimum window", "shrink window", "two pointer window"]
+code = ["algorithms/sliding_window.py:longest_with_k_distinct"]
+time = "O(n)"
+space = "O(k)"
+use_when = "Longest or shortest contiguous run that satisfies a condition, where shrinking can only fix a violation."
+
+[[part.section.entry]]
+id = "longest-unique-substring"
+title = "Longest substring without repeats"
+aliases = ["no repeating characters", "last seen index", "unique window"]
+code = ["algorithms/sliding_window.py:longest_unique_substring"]
+time = "O(n)"
+space = "O(k), k = alphabet size"
+
+[[part.section]]
+id = "prefix-sums"
+title = "Prefix sums"
+
+[[part.section.entry]]
+id = "prefix-sum-array"
+title = "Prefix sums & range sums"
+aliases = ["cumulative sum", "running total", "range sum query", "accumulate"]
+code = ["algorithms/prefix_sums.py:prefix_sums", "algorithms/prefix_sums.py:demo_range_sum"]
+time = "O(n) to build, O(1) per range"
+space = "O(n)"
+
+[[part.section.entry]]
+id = "subarray-sum-k"
+title = "Count subarrays that sum to k"
+aliases = ["subarray sum equals k", "prefix sum hash map", "negative numbers window"]
+code = ["algorithms/prefix_sums.py:count_subarrays_with_sum"]
+time = "O(n)"
+space = "O(n)"
+use_when = "Subarray sums with negative numbers, where a sliding window does not work."
