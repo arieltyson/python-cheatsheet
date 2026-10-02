@@ -448,3 +448,82 @@ rows = [
   ["Compare, hash", "`first == second`, `hash(text)`", "O(n)"],
   ["Sort characters", "`sorted(text)`", "O(n log n)"],
 ]
+
+[[part.section]]
+id = "stack-queue"
+title = "Stack & queue"
+
+[[part.section.entry]]
+id = "stack"
+title = "Stack with a list"
+aliases = ["lifo", "push pop", "peek", "undo"]
+code = ["structures/stack_queue.py:demo_stack"]
+
+[[part.section.entry]]
+id = "queue"
+title = "Queue with a deque"
+aliases = ["fifo", "enqueue", "dequeue", "bfs queue"]
+code = ["structures/stack_queue.py:demo_queue"]
+gotcha = "`list.pop(0)` is O(n). `deque.popleft()` is O(1)."
+
+[[part.section.entry]]
+id = "valid-brackets"
+title = "Balanced brackets"
+aliases = ["valid parentheses", "matching brackets", "stack template"]
+code = ["structures/stack_queue.py:is_balanced"]
+time = "O(n)"
+space = "O(n)"
+use_when = "Matching pairs, nesting, or undoing the most recent thing first."
+
+[[part.section]]
+id = "linked-list"
+title = "Linked list"
+
+[[part.section.entry]]
+id = "list-node"
+title = "ListNode"
+aliases = ["node class", "singly linked list"]
+code = ["structures/linked_list.py:ListNode"]
+gotcha = "LeetCode names the fields `val` and `next`. This sheet matches them."
+
+[[part.section.entry]]
+id = "build-linked-list"
+title = "Build & read a linked list"
+aliases = ["array to linked list", "print linked list", "test helper", "dummy head"]
+code = ["structures/linked_list.py:build_list", "structures/linked_list.py:list_values"]
+time = "O(n)"
+space = "O(n)"
+use_when = "Testing your own solution, or any time you build a list: a dummy head removes the empty-list special case."
+
+[[part.section.entry]]
+id = "reverse-linked-list"
+title = "Reverse a linked list"
+aliases = ["reverse list", "in place reversal", "previous current next"]
+code = ["structures/linked_list.py:reverse_list"]
+time = "O(n)"
+space = "O(1)"
+
+[[part.section.entry]]
+id = "middle-node"
+title = "Middle node (fast & slow pointers)"
+aliases = ["tortoise and hare", "find middle", "half"]
+code = ["structures/linked_list.py:middle_node"]
+time = "O(n)"
+space = "O(1)"
+
+[[part.section.entry]]
+id = "linked-list-cycle"
+title = "Detect a cycle"
+aliases = ["floyd", "loop detection", "tortoise and hare", "cycle"]
+code = ["structures/linked_list.py:has_cycle"]
+time = "O(n)"
+space = "O(1)"
+gotcha = "Compare nodes with `is`, not values: two nodes can hold the same value."
+
+[[part.section.entry]]
+id = "merge-sorted-lists"
+title = "Merge two sorted lists"
+aliases = ["merge linked lists", "dummy node", "merge step"]
+code = ["structures/linked_list.py:merge_sorted"]
+time = "O(n + m)"
+space = "O(1)"
