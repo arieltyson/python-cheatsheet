@@ -159,3 +159,70 @@ title = "Rounding, floor & ceil"
 aliases = ["round half", "banker's rounding", "truncate", "floor", "ceil"]
 code = ["syntax/formatting.py:demo_rounding"]
 gotcha = "For money, round integer cents, not floats."
+
+[[part.section]]
+id = "containers"
+title = "Lists, tuples, dicts & sets"
+
+[[part.section.entry]]
+id = "list-operations"
+title = "list operations"
+aliases = ["append", "pop", "insert", "remove", "extend", "array"]
+code = ["syntax/containers.py:demo_list_operations"]
+gotcha = "`pop(0)`, `insert(0, x)` and `remove(x)` are O(n). Use `deque` for a queue."
+
+[[part.section.entry]]
+id = "comprehensions"
+title = "Comprehensions"
+aliases = ["list comprehension", "dict comprehension", "set comprehension", "flatten", "filter", "map"]
+code = ["syntax/containers.py:demo_comprehensions"]
+
+[[part.section.entry]]
+id = "grid"
+title = "2D grids"
+aliases = ["matrix", "2d array", "board", "transpose", "rows and columns"]
+code = ["syntax/containers.py:demo_grid"]
+gotcha = "`[[0] * cols] * rows` makes every row the same list. Use a comprehension."
+
+[[part.section.entry]]
+id = "unpacking"
+title = "Unpacking & swapping"
+aliases = ["swap", "star", "destructure", "tuple unpacking"]
+code = ["syntax/containers.py:demo_unpacking"]
+
+[[part.section.entry]]
+id = "copying"
+title = "Shallow vs deep copies"
+aliases = ["copy list", "clone", "aliasing", "deepcopy"]
+code = ["syntax/containers.py:demo_copying"]
+gotcha = "Backtracking: append `path[:]` to results, not `path`, or every result changes later."
+
+[[part.section.entry]]
+id = "dict-operations"
+title = "dict operations"
+aliases = ["hash map", "get default", "setdefault", "key exists", "merge dicts", "pop key"]
+code = ["syntax/containers.py:demo_dict_operations"]
+
+[[part.section.entry]]
+id = "sort-dict"
+title = "Sort a dict by value"
+aliases = ["order by count", "dict by value", "key with max value"]
+code = ["syntax/containers.py:demo_sort_dict"]
+
+[[part.section.entry]]
+id = "set-operations"
+title = "set operations"
+aliases = ["union", "intersection", "difference", "subset", "dedupe", "unique"]
+code = ["syntax/containers.py:demo_set_operations"]
+
+[[part.section.entry]]
+id = "hashable-keys"
+title = "Tuples as keys"
+aliases = ["visited set", "coordinates", "memo key", "hashable", "frozenset", "unhashable list"]
+code = ["syntax/containers.py:demo_hashable_keys"]
+
+[[part.section.entry]]
+id = "infinity"
+title = "Infinity & big integers"
+aliases = ["inf", "max int", "integer overflow", "sentinel"]
+code = ["syntax/containers.py:demo_infinity"]
