@@ -598,3 +598,30 @@ code = ["structures/binary_tree.py:is_valid_bst"]
 time = "O(n)"
 space = "O(h)"
 gotcha = "Comparing a node only with its children is wrong. Every node must fit the bounds from all its ancestors."
+
+[[part.section]]
+id = "trie"
+title = "Trie"
+
+[[part.section.entry]]
+id = "trie-template"
+title = "Trie (prefix tree)"
+aliases = ["prefix tree", "autocomplete", "word search", "starts with", "dictionary of words"]
+code = ["structures/trie.py:TrieNode", "structures/trie.py:Trie", "structures/trie.py:demo_trie"]
+time = "O(m) per operation, m = word length"
+space = "O(total characters inserted)"
+use_when = "Many prefix lookups over a set of words."
+gotcha = "LeetCode calls the method `startsWith`. The logic is the same."
+
+[[part.section]]
+id = "union-find"
+title = "Union-find"
+
+[[part.section.entry]]
+id = "union-find-template"
+title = "Union-find (disjoint set)"
+aliases = ["disjoint set", "dsu", "connected components", "redundant connection", "cycle in undirected graph", "kruskal"]
+code = ["structures/union_find.py:UnionFind", "structures/union_find.py:demo_union_find"]
+time = "O(α(n)) amortized per operation, effectively O(1)"
+space = "O(n)"
+use_when = "Merging groups and asking whether two items are connected, especially as edges arrive one at a time."
