@@ -13,4 +13,51 @@ title = "Built-ins & sorting"
 [[part.section.entry]]
 id = "range"
 title = "range"
+aliases = ["loop", "step", "countdown", "reverse range"]
 code = ["syntax/builtins.py:demo_range"]
+
+[[part.section.entry]]
+id = "enumerate-zip"
+title = "enumerate & zip"
+aliases = ["index and value", "pairs", "unzip", "parallel lists"]
+code = ["syntax/builtins.py:demo_enumerate_zip"]
+
+[[part.section.entry]]
+id = "sorted"
+title = "sorted & list.sort"
+aliases = ["sort", "order", "reverse", "case insensitive"]
+code = ["syntax/builtins.py:demo_sorting"]
+gotcha = "`list.sort()` returns `None`. Writing `items = items.sort()` loses the list."
+
+[[part.section.entry]]
+id = "sort-keys"
+title = "Sort by several keys"
+aliases = ["multi key sort", "descending", "tie break", "lambda", "custom sort"]
+code = ["syntax/builtins.py:demo_sort_keys"]
+use_when = "Sort descending on one field and ascending on another: negate the numeric field in a tuple key."
+gotcha = "Python's sort is stable and costs O(n log n). There is no `cmp=`; use `key=`."
+
+[[part.section.entry]]
+id = "min-max"
+title = "min & max"
+aliases = ["largest", "smallest", "argmax", "key with max value"]
+code = ["syntax/builtins.py:demo_min_max"]
+gotcha = "`max([])` raises `ValueError`. Pass `default=` when the input can be empty."
+
+[[part.section.entry]]
+id = "aggregates"
+title = "sum, any, all, divmod, pow, reversed"
+aliases = ["count matching", "modular power", "quotient remainder", "abs"]
+code = ["syntax/builtins.py:demo_aggregates"]
+
+[[part.section.entry]]
+id = "ord-chr"
+title = "ord & chr"
+aliases = ["ascii", "character code", "letter index", "alphabet"]
+code = ["syntax/builtins.py:demo_characters"]
+
+[[part.section.entry]]
+id = "conversions"
+title = "Conversions & number bases"
+aliases = ["parse int", "binary", "hex", "base 2", "read input", "map int"]
+code = ["syntax/builtins.py:demo_conversions"]
