@@ -999,4 +999,61 @@ aliases = ["lis", "patience sorting", "increasing subsequence", "tails array"]
 code = ["algorithms/dynamic_programming.py:longest_increasing_subsequence"]
 time = "O(n log n)"
 space = "O(n)"
-gotcha = "`tails` is not the subsequence itself, only its length is right. The inner loop is the lower bound search from Binary search."
+gotcha = "`tails` is not the subsequence itself; only its length is meaningful. The inner loop is the lower bound search from Binary search."
+
+[[part.section]]
+id = "sorting-selection"
+title = "Sorting & selection"
+
+[[part.section.entry]]
+id = "merge-sort"
+title = "Merge sort"
+aliases = ["divide and conquer", "stable sort", "merge step", "sort implementation", "count inversions"]
+code = ["algorithms/sorting.py:merge_sort"]
+time = "O(n log n)"
+space = "O(n)"
+use_when = "You are asked to implement a sort, or to count something during the merge (inversions). Otherwise call `sorted`."
+
+[[part.section.entry]]
+id = "quickselect"
+title = "k-th largest (quickselect)"
+aliases = ["kth largest element", "selection", "median", "partition", "order statistic"]
+code = ["algorithms/sorting.py:kth_largest"]
+time = "O(n) average, O(n^2) worst"
+space = "O(n)"
+gotcha = "A fixed pivot can hit the O(n^2) worst case on crafted input. If `random` is allowed, use `random.choice(candidates)`."
+
+[[part.section.entry]]
+id = "top-k-heap"
+title = "Top k with a size-k heap"
+aliases = ["k largest", "top k elements", "k closest", "streaming top k", "heap of size k"]
+code = ["algorithms/sorting.py:top_k_largest"]
+time = "O(n log k)"
+space = "O(k)"
+use_when = "k is much smaller than n, or the values arrive as a stream. For the k smallest, push `-value`."
+
+[[part.section]]
+id = "bit-manipulation"
+title = "Bit manipulation"
+
+[[part.section.entry]]
+id = "bit-tricks"
+title = "Bit tricks"
+aliases = ["bitwise", "and or xor", "shift", "set bit", "clear bit", "power of two", "count bits", "popcount"]
+code = ["algorithms/bits.py:demo_bits"]
+gotcha = "`int.bit_count()` needs Python 3.10+. Use `bin(value).count(\"1\")` on older versions."
+
+[[part.section.entry]]
+id = "bitmask-subsets"
+title = "Subsets as bitmasks"
+aliases = ["bitmask", "mask", "enumerate subsets", "bitmask dp"]
+code = ["algorithms/bits.py:demo_bitmask_subsets"]
+
+[[part.section.entry]]
+id = "single-number"
+title = "Single number (XOR)"
+aliases = ["xor trick", "find unique", "appears once", "missing number"]
+code = ["algorithms/bits.py:single_number"]
+time = "O(n)"
+space = "O(1)"
+gotcha = "`x ^ x == 0` and `x ^ 0 == x`, so pairs cancel. Missing number: XOR every index and every value."
