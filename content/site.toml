@@ -322,3 +322,129 @@ id = "comparable-class"
 title = "A sortable, heap-ready class"
 aliases = ["__lt__", "__repr__", "__slots__", "custom object in heap", "dunder", "class"]
 code = ["syntax/classes.py:Task", "syntax/classes.py:demo_task"]
+
+[[part]]
+id = "structures"
+title = "Data structures"
+
+[[part.section]]
+id = "complexity"
+title = "Operation costs"
+intro = "Average case in CPython. Worst case is shown where it differs and matters."
+
+[[part.section.entry]]
+id = "constraints"
+title = "Input size to target complexity"
+aliases = ["constraints", "time limit", "how fast", "big o target", "n <= 10^5"]
+
+[part.section.entry.table]
+header = ["Input size n", "Target", "Typical approach"]
+rows = [
+  ["n <= 10", "O(n!)", "Permutations, backtracking"],
+  ["n <= 20", "O(2^n)", "Subsets, bitmask DP"],
+  ["n <= 500", "O(n^3)", "Triple loop, interval DP"],
+  ["n <= 5,000", "O(n^2)", "All pairs, 2D DP"],
+  ["n <= 10^6", "O(n log n)", "Sort, heap, binary search"],
+  ["n <= 10^8", "O(n)", "One pass, two pointers, hash map"],
+  ["Larger", "O(log n) or O(1)", "Binary search, math"],
+]
+
+[[part.section.entry]]
+id = "list-costs"
+title = "list costs"
+aliases = ["array complexity", "list big o", "pop(0)"]
+
+[part.section.entry.table]
+header = ["Operation", "Code", "Time"]
+rows = [
+  ["Index, assign", "`items[i]`, `items[i] = x`", "O(1)"],
+  ["Append", "`items.append(x)`", "O(1) amortized"],
+  ["Pop from the end", "`items.pop()`", "O(1)"],
+  ["Pop or insert elsewhere", "`items.pop(0)`, `items.insert(i, x)`", "O(n)"],
+  ["Search", "`x in items`, `items.index(x)`", "O(n)"],
+  ["Remove a value", "`items.remove(x)`", "O(n)"],
+  ["Slice", "`items[a:b]`", "O(b - a)"],
+  ["Extend", "`items.extend(other)`", "O(k)"],
+  ["Copy", "`items[:]`, `items.copy()`", "O(n)"],
+  ["Sort", "`items.sort()`, `sorted(items)`", "O(n log n)"],
+  ["min, max, sum", "`min(items)`", "O(n)"],
+  ["Length", "`len(items)`", "O(1)"],
+]
+
+[[part.section.entry]]
+id = "dict-costs"
+title = "dict costs"
+aliases = ["hash map complexity", "dictionary big o"]
+
+[part.section.entry.table]
+header = ["Operation", "Code", "Time"]
+rows = [
+  ["Get, set, delete", "`d[k]`, `d[k] = v`, `del d[k]`", "O(1), worst O(n)"],
+  ["Membership", "`k in d`", "O(1), worst O(n)"],
+  ["Get with default", "`d.get(k, 0)`", "O(1)"],
+  ["Iterate", "`for k, v in d.items()`", "O(n)"],
+  ["Copy", "`d.copy()`", "O(n)"],
+]
+
+[[part.section.entry]]
+id = "set-costs"
+title = "set costs"
+aliases = ["hash set complexity", "set big o"]
+
+[part.section.entry.table]
+header = ["Operation", "Code", "Time"]
+rows = [
+  ["Add, remove, membership", "`s.add(x)`, `s.discard(x)`, `x in s`", "O(1), worst O(n)"],
+  ["Union", "`s | t`", "O(len(s) + len(t))"],
+  ["Intersection", "`s & t`", "O(min(len(s), len(t)))"],
+  ["Difference", "`s - t`", "O(len(s))"],
+  ["Subset", "`s <= t`", "O(len(s))"],
+]
+
+[[part.section.entry]]
+id = "deque-costs"
+title = "deque costs"
+aliases = ["queue complexity", "deque big o"]
+
+[part.section.entry.table]
+header = ["Operation", "Code", "Time"]
+rows = [
+  ["Add or remove at either end", "`append`, `appendleft`, `pop`, `popleft`", "O(1)"],
+  ["Read either end", "`queue[0]`, `queue[-1]`", "O(1)"],
+  ["Read the middle", "`queue[i]`", "O(n)"],
+  ["Rotate", "`queue.rotate(k)`", "O(k)"],
+  ["Search", "`x in queue`", "O(n)"],
+]
+
+[[part.section.entry]]
+id = "heap-costs"
+title = "heapq costs"
+aliases = ["priority queue complexity", "heap big o"]
+
+[part.section.entry.table]
+header = ["Operation", "Code", "Time"]
+rows = [
+  ["Push, pop", "`heappush`, `heappop`", "O(log n)"],
+  ["Push and pop together", "`heappushpop`, `heapreplace`", "O(log n)"],
+  ["Peek at the smallest", "`heap[0]`", "O(1)"],
+  ["Build from a list", "`heapify(items)`", "O(n)"],
+  ["k largest or smallest", "`nlargest(k, items)`", "O(n log k)"],
+  ["Find or remove any item", "Not supported", "Scan is O(n)"],
+]
+
+[[part.section.entry]]
+id = "str-costs"
+title = "str costs"
+aliases = ["string complexity", "string big o", "concatenation cost"]
+
+[part.section.entry.table]
+header = ["Operation", "Code", "Time"]
+rows = [
+  ["Index", "`text[i]`", "O(1)"],
+  ["Slice", "`text[a:b]`", "O(b - a)"],
+  ["Concatenate", "`first + second`", "O(len(first) + len(second))"],
+  ["Join", "`\"\".join(parts)`", "O(total length)"],
+  ["Substring search", "`part in text`, `text.find(part)`", "O(n * m) worst case"],
+  ["Compare, hash", "`first == second`, `hash(text)`", "O(n)"],
+  ["Sort characters", "`sorted(text)`", "O(n log n)"],
+]
