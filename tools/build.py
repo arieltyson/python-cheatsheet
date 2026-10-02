@@ -1,6 +1,7 @@
 """Compile content/site.toml and snippets/ into dist/index.html."""
 
 import html
+import json
 import re
 import shutil
 from pathlib import Path
@@ -147,6 +148,29 @@ def render_toc(site: Site) -> str:
     )
 
 
+def jump_index(site: Site) -> str:
+    """Return [id, title, context, keywords, kind] jump-list rows."""
+    rows = []
+    for part in site.parts:
+        rows.append([part.id, part.title, "Part", "", "part"])
+        for section in part.sections:
+            rows.append(
+                [section.id, section.title, part.title, "", "section"]
+            )
+            rows.extend(
+                [
+                    entry.id,
+                    entry.title,
+                    section.title,
+                    " ".join(entry.aliases),
+                    "entry",
+                ]
+                for entry in section.entries
+            )
+    # "</" would end the <script> element early
+    return json.dumps(rows, separators=(",", ":")).replace("</", "<\\/")
+
+
 def render_styles() -> str:
     tokens = load_tokens(WEB / "tokens.toml")
     styles = (WEB / "styles.css").read_text(encoding="utf-8")
@@ -160,6 +184,7 @@ def render_page(site: Site) -> str:
         {
             "styles": render_styles(),
             "toc": render_toc(site),
+            "jump-index": jump_index(site),
             "script": (WEB / "app.js").read_text(encoding="utf-8"),
             "content": "\n".join(render_part(p) for p in site.parts),
         },

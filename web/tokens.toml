@@ -16,6 +16,8 @@ text-muted = ["#55554F", "#A3A19B"]
 link = ["#1F5FA8", "#8CBDF5"]
 # Dark uses the same yellow at 35% opacity over the dark background.
 highlight = ["#FFD43B", "#FFD43B59"]
+# Behind the jump-list dialog. Not text, so not contrast tested.
+backdrop = ["#1B1B1833", "#00000099"]
 
 [syntax]
 kw = ["#A0306E", "#F29AC4"]

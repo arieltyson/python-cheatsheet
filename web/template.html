@@ -11,6 +11,9 @@
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header">
 <h1 class="brand">Python CheatSheet</h1>
+<div class="controls" hidden>
+<button type="button" id="jump-button" aria-haspopup="dialog">Jump to <kbd>/</kbd></button>
+</div>
 </header>
 <div class="layout">
 <!-- slot:toc -->
@@ -18,6 +21,12 @@
 <!-- slot:content -->
 </main>
 </div>
+<dialog id="jump-dialog" aria-label="Jump to a topic">
+<input id="jump-input" type="text" role="combobox" aria-expanded="true" aria-controls="jump-results" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="heap, money, shortest path...">
+<ul id="jump-results" role="listbox" aria-label="Matches"></ul>
+<p class="jump-hint"><kbd>&uarr;</kbd> <kbd>&darr;</kbd> to move, <kbd>Enter</kbd> to jump, <kbd>Esc</kbd> to close</p>
+</dialog>
+<script type="application/json" id="jump-index"><!-- slot:jump-index --></script>
 <script><!-- slot:script --></script>
 </body>
 </html>

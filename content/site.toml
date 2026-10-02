@@ -112,7 +112,7 @@ intro = "Format spec: `{value:[fill][align][sign][width][,][.precision][type]}`.
 
 [[part.section.entry]]
 id = "format-money"
-title = "Dollars and cents"
+title = "Format money: dollars and cents"
 aliases = ["money", "currency", "price", "two decimals", "thousands separator", "comma"]
 code = ["syntax/formatting.py:demo_money"]
 
@@ -124,7 +124,7 @@ code = ["syntax/formatting.py:demo_money_negative"]
 
 [[part.section.entry]]
 id = "money-in-cents"
-title = "Money as integer cents"
+title = "Store money as integer cents"
 aliases = ["float precision", "0.1 + 0.2", "isclose", "parse price", "divmod cents"]
 code = ["syntax/formatting.py:demo_cents"]
 use_when = "Any calculation with money. Convert to cents on input, format only for display."
