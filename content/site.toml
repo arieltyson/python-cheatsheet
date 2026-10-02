@@ -653,3 +653,40 @@ id = "graph-usage"
 title = "Using the helpers"
 aliases = ["graph example"]
 code = ["structures/graphs.py:demo_graphs"]
+
+[[part]]
+id = "algorithms"
+title = "Algorithms"
+
+[[part.section]]
+id = "binary-search"
+title = "Binary search"
+intro = "Written by hand, without `bisect`. The loop condition and the update must agree: `low <= high` with `middle ± 1`, or `low < high` with `high = middle`."
+
+[[part.section.entry]]
+id = "binary-search-exact"
+title = "Find an exact value"
+aliases = ["binary search", "search sorted array", "log n search"]
+code = ["algorithms/binary_search.py:binary_search"]
+time = "O(log n)"
+space = "O(1)"
+use_when = "The input is sorted and you need one matching position."
+
+[[part.section.entry]]
+id = "lower-upper-bound"
+title = "Lower & upper bound"
+aliases = ["bisect_left", "bisect_right", "first occurrence", "last occurrence", "insert position", "count in range", "leftmost"]
+code = ["algorithms/binary_search.py:lower_bound", "algorithms/binary_search.py:upper_bound"]
+time = "O(log n)"
+space = "O(1)"
+use_when = "First or last position of a value, where to insert it, or how many values fall in a range: `upper_bound(v, b) - lower_bound(v, a)`."
+gotcha = "Last occurrence of target is `upper_bound(values, target) - 1`, after checking that target is present."
+
+[[part.section.entry]]
+id = "binary-search-answer"
+title = "Search on the answer"
+aliases = ["minimize maximum", "smallest feasible", "koko eating bananas", "capacity to ship", "predicate binary search", "monotonic condition"]
+code = ["algorithms/binary_search.py:first_true", "algorithms/binary_search.py:min_eating_speed"]
+time = "O(n log m), m = size of the answer range"
+space = "O(1)"
+use_when = "\"Find the smallest x such that ...\" and if x works, every larger x works too."
