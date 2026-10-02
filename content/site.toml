@@ -1,0 +1,16 @@
+# Parts -> sections -> entries. Every entry shows either tested code
+# from snippets/ (code = ["path.py:name"]) or a table. Functions named
+# demo_* are shown as their body only; anything else is shown whole.
+
+[[part]]
+id = "syntax"
+title = "Syntax"
+
+[[part.section]]
+id = "builtins"
+title = "Built-ins & sorting"
+
+[[part.section.entry]]
+id = "range"
+title = "range"
+code = ["syntax/builtins.py:demo_range"]
