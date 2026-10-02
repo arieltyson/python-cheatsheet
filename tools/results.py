@@ -53,8 +53,6 @@ def _split_assert(test: ast.expr, source: str) -> tuple[str, str]:
             segment(source, test.left),
             segment(source, test.comparators[0]),
         )
-    if isinstance(test, ast.UnaryOp) and isinstance(test.op, ast.Not):
-        return segment(source, test.operand), "False"
     return segment(source, test), "True"
 
 

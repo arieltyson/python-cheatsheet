@@ -21,7 +21,7 @@ class AssertsAsResultsTests(unittest.TestCase):
     def test_membership_and_negation(self) -> None:
         self.assertEqual(
             asserts_as_results("assert 'a' in word\nassert not word"),
-            "'a' in word  # True\nword         # False",
+            "'a' in word  # True\nnot word     # True",
         )
 
     def test_is_none(self) -> None:

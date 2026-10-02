@@ -226,3 +226,30 @@ id = "infinity"
 title = "Infinity & big integers"
 aliases = ["inf", "max int", "integer overflow", "sentinel"]
 code = ["syntax/containers.py:demo_infinity"]
+
+[[part.section]]
+id = "collections"
+title = "collections"
+intro = "`from collections import Counter, defaultdict, deque`"
+
+[[part.section.entry]]
+id = "deque"
+title = "deque"
+aliases = ["queue", "double ended queue", "popleft", "appendleft", "sliding window max", "fifo"]
+code = ["syntax/collections_tools.py:demo_deque"]
+use_when = "Queues (BFS) and anything that adds or removes at both ends: O(1) at either end."
+gotcha = "Indexing the middle, `queue[i]`, is O(n). Use a list when you need random access."
+
+[[part.section.entry]]
+id = "defaultdict"
+title = "defaultdict"
+aliases = ["group by", "adjacency list", "default value", "multimap", "bucket"]
+code = ["syntax/collections_tools.py:demo_defaultdict"]
+gotcha = "Reading a missing key inserts it. Use `key in mapping` to test without inserting."
+
+[[part.section.entry]]
+id = "counter"
+title = "Counter"
+aliases = ["frequency", "count occurrences", "histogram", "most common", "top k frequent", "anagram check"]
+code = ["syntax/collections_tools.py:demo_counter"]
+gotcha = "`most_common(k)` is O(n log k). `total()` needs Python 3.10+."

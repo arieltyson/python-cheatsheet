@@ -80,8 +80,10 @@ class ManifestCoverageTests(unittest.TestCase):
                     node, (ast.FunctionDef, ast.ClassDef)
                 )
                 if is_definition and not node.name.startswith("_"):
-                    with self.subTest(file=relative, name=node.name):
-                        self.assertIn((relative, node.name), shown)
+                    self.assertTrue(
+                        (relative, node.name) in shown,
+                        f"{relative}:{node.name} is not in site.toml",
+                    )
 
 
 if __name__ == "__main__":
