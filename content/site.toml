@@ -61,3 +61,101 @@ id = "conversions"
 title = "Conversions & number bases"
 aliases = ["parse int", "binary", "hex", "base 2", "read input", "map int"]
 code = ["syntax/builtins.py:demo_conversions"]
+
+[[part.section]]
+id = "strings"
+title = "Strings"
+
+[[part.section.entry]]
+id = "slicing"
+title = "Slicing & reversing"
+aliases = ["substring", "reverse string", "last characters", "step"]
+code = ["syntax/strings.py:demo_slicing"]
+gotcha = "Slicing copies: `text[1:]` in a loop is O(n) each time. Pass indices instead."
+
+[[part.section.entry]]
+id = "split-join"
+title = "split, strip & join"
+aliases = ["tokenize", "words", "csv", "parse line", "partition"]
+code = ["syntax/strings.py:demo_split_join"]
+
+[[part.section.entry]]
+id = "string-checks"
+title = "Case & character checks"
+aliases = ["isalnum", "isdigit", "isalpha", "lower", "upper", "strip"]
+code = ["syntax/strings.py:demo_case_and_checks"]
+
+[[part.section.entry]]
+id = "string-search"
+title = "find, index, count & replace"
+aliases = ["substring search", "contains", "startswith", "endswith"]
+code = ["syntax/strings.py:demo_search"]
+gotcha = "`find` returns -1 when missing; `index` raises `ValueError`."
+
+[[part.section.entry]]
+id = "build-strings"
+title = "Building strings"
+aliases = ["concatenate", "string builder", "immutable", "clean string", "palindrome cleanup"]
+code = ["syntax/strings.py:demo_build_strings"]
+gotcha = "`result += piece` in a loop can be O(n^2). Append to a list and `\"\".join` once."
+
+[[part.section.entry]]
+id = "letter-counts"
+title = "Letter counts & anagram keys"
+aliases = ["anagram", "frequency array", "26 letters", "group anagrams"]
+code = ["syntax/strings.py:demo_letter_counts"]
+
+[[part.section]]
+id = "formatting"
+title = "f-strings & number formatting"
+intro = "Format spec: `{value:[fill][align][sign][width][,][.precision][type]}`."
+
+[[part.section.entry]]
+id = "format-money"
+title = "Dollars and cents"
+aliases = ["money", "currency", "price", "two decimals", "thousands separator", "comma"]
+code = ["syntax/formatting.py:demo_money"]
+
+[[part.section.entry]]
+id = "format-negative-money"
+title = "Negative money"
+aliases = ["refund", "balance", "minus sign", "debt"]
+code = ["syntax/formatting.py:demo_money_negative"]
+
+[[part.section.entry]]
+id = "money-in-cents"
+title = "Money as integer cents"
+aliases = ["float precision", "0.1 + 0.2", "isclose", "parse price", "divmod cents"]
+code = ["syntax/formatting.py:demo_cents"]
+use_when = "Any calculation with money. Convert to cents on input, format only for display."
+
+[[part.section.entry]]
+id = "format-decimals"
+title = "Decimals, separators & percent"
+aliases = ["precision", "percentage", "scientific", "plus sign", "underscore separator"]
+code = ["syntax/formatting.py:demo_decimals_and_separators"]
+
+[[part.section.entry]]
+id = "format-alignment"
+title = "Width, alignment & padding"
+aliases = ["pad", "left align", "right align", "center", "zero pad", "zfill", "table output"]
+code = ["syntax/formatting.py:demo_alignment"]
+
+[[part.section.entry]]
+id = "format-bases"
+title = "Binary, hex & octal"
+aliases = ["bits", "base 2", "base 16", "leading zeros"]
+code = ["syntax/formatting.py:demo_format_bases"]
+
+[[part.section.entry]]
+id = "format-debugging"
+title = "Debug output & braces"
+aliases = ["print variable", "repr", "self documenting", "escape braces"]
+code = ["syntax/formatting.py:demo_debugging"]
+
+[[part.section.entry]]
+id = "rounding"
+title = "Rounding, floor & ceil"
+aliases = ["round half", "banker's rounding", "truncate", "floor", "ceil"]
+code = ["syntax/formatting.py:demo_rounding"]
+gotcha = "For money, round integer cents, not floats."
