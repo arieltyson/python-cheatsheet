@@ -778,3 +778,39 @@ code = ["algorithms/prefix_sums.py:count_subarrays_with_sum"]
 time = "O(n)"
 space = "O(n)"
 use_when = "Subarray sums with negative numbers, where a sliding window does not work."
+
+[[part.section]]
+id = "monotonic-stack"
+title = "Monotonic stack"
+
+[[part.section.entry]]
+id = "next-greater"
+title = "Next greater element"
+aliases = ["daily temperatures", "next larger", "stock span", "monotonic decreasing stack"]
+code = ["algorithms/monotonic_stack.py:next_greater"]
+time = "O(n)"
+space = "O(n)"
+use_when = "For each item, find the nearest item to one side that is larger or smaller."
+gotcha = "Each index is pushed and popped once, so the nested while loop is still O(n) overall. For daily temperatures, store `i - popped` instead of the value."
+
+[[part.section]]
+id = "intervals"
+title = "Intervals"
+
+[[part.section.entry]]
+id = "merge-intervals"
+title = "Merge overlapping intervals"
+aliases = ["overlap", "union of ranges", "combine intervals", "insert interval"]
+code = ["algorithms/intervals.py:merge_intervals"]
+time = "O(n log n)"
+space = "O(n)"
+gotcha = "Sort by start first. Touching intervals like `[1, 4]` and `[4, 5]` merge because of `<=`."
+
+[[part.section.entry]]
+id = "meeting-rooms"
+title = "Minimum meeting rooms"
+aliases = ["meeting rooms ii", "max overlap", "concurrent intervals", "platforms needed"]
+code = ["algorithms/intervals.py:min_meeting_rooms"]
+time = "O(n log n)"
+space = "O(n)"
+use_when = "The largest number of intervals open at the same moment."
