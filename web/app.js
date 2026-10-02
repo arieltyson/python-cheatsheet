@@ -197,7 +197,29 @@ function addCopyButtons() {
   }
 }
 
+function setUpThemeToggle() {
+  const root = document.documentElement;
+  const button = document.getElementById("theme-button");
+  const themes = ["system", "light", "dark"];
+  let theme = root.dataset.theme ?? "system";
+  const label = () => {
+    button.textContent = `Theme: ${theme[0].toUpperCase()}${theme.slice(1)}`;
+  };
+  button.addEventListener("click", () => {
+    theme = themes[(themes.indexOf(theme) + 1) % themes.length];
+    try {
+      if (theme === "system") localStorage.removeItem("theme");
+      else localStorage.setItem("theme", theme);
+    } catch {}
+    if (theme === "system") delete root.dataset.theme;
+    else root.dataset.theme = theme;
+    label();
+  });
+  label();
+}
+
 markCurrentSection();
 setUpJumpList();
 addCopyButtons();
+setUpThemeToggle();
 document.querySelector(".controls").hidden = false;

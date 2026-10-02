@@ -344,3 +344,14 @@ dialog::backdrop { background: var(--backdrop); }
   right: 0;
   padding: var(--space-1) var(--space-3);
 }
+
+/* Print: light, no navigation, code blocks kept whole. */
+
+@media print {
+  :root { color-scheme: light; }
+  .skip-link, .controls, .toc, .copy-button { display: none; }
+  .layout { display: block; padding: 0; }
+  .part > h2 { break-before: page; }
+  pre, table { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+}

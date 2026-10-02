@@ -186,6 +186,9 @@ def render_page(site: Site) -> str:
             "toc": render_toc(site),
             "jump-index": jump_index(site),
             "script": (WEB / "app.js").read_text(encoding="utf-8"),
+            "theme-script": (WEB / "theme.js").read_text(
+                encoding="utf-8"
+            ),
             "content": "\n".join(render_part(p) for p in site.parts),
         },
     )
