@@ -157,6 +157,47 @@ function setUpJumpList() {
   });
 }
 
+function entryCode(entry) {
+  return [...entry.querySelectorAll("pre code")]
+    .map((code) =>
+      [...code.querySelectorAll(".line")]
+        .map((line) => line.textContent)
+        .join("\n"),
+    )
+    .join("\n\n");
+}
+
+function selectCode(entry) {
+  const range = document.createRange();
+  range.selectNodeContents(entry.querySelector("pre"));
+  getSelection().removeAllRanges();
+  getSelection().addRange(range);
+}
+
+function addCopyButtons() {
+  for (const entry of document.querySelectorAll(".entry")) {
+    if (!entry.querySelector("pre")) continue;
+    const title = entry.querySelector("h4").textContent;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "copy-button";
+    button.textContent = "Copy";
+    button.setAttribute("aria-label", `Copy code: ${title}`);
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(entryCode(entry));
+        button.textContent = "Copied";
+      } catch {
+        selectCode(entry);
+        button.textContent = "Press Cmd+C";
+      }
+      setTimeout(() => (button.textContent = "Copy"), HIGHLIGHT_MS);
+    });
+    entry.append(button);
+  }
+}
+
 markCurrentSection();
 setUpJumpList();
+addCopyButtons();
 document.querySelector(".controls").hidden = false;

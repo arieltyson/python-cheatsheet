@@ -332,3 +332,15 @@ dialog::backdrop { background: var(--backdrop); }
 @media (prefers-reduced-motion: reduce) {
   .part > h2, .section > h3, .entry > h4 { transition: none; }
 }
+
+/* Copy buttons sit beside the entry title, never over the code. */
+
+.entry { position: relative; }
+.entry:has(.copy-button) > h4 { padding-right: 6rem; }
+
+.copy-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: var(--space-1) var(--space-3);
+}
