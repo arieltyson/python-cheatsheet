@@ -894,3 +894,109 @@ time = "O((V + E) log V)"
 space = "O(V + E)"
 use_when = "Shortest path from one source when edges have different non-negative weights. Equal weights: plain BFS is enough."
 gotcha = "Negative weights break Dijkstra. To rebuild the path, store `previous[neighbor] = node` whenever a distance improves."
+
+[[part.section]]
+id = "backtracking"
+title = "Backtracking"
+intro = "Choose, explore, unchoose. Append a copy (`path[:]`) to the results, never `path` itself."
+
+[[part.section.entry]]
+id = "subsets"
+title = "Subsets"
+aliases = ["power set", "all subsets", "choose or skip"]
+code = ["algorithms/backtracking.py:subsets"]
+time = "O(n * 2^n)"
+space = "O(n) besides the output"
+
+[[part.section.entry]]
+id = "combinations"
+title = "Combinations of size k"
+aliases = ["n choose k", "combination sum", "pick k", "start index"]
+code = ["algorithms/backtracking.py:combinations"]
+time = "O(k * C(n, k))"
+space = "O(k) besides the output"
+gotcha = "For combination sum, pass `i` instead of `i + 1` to allow reuse, and stop early once the running total is too large."
+
+[[part.section.entry]]
+id = "permutations"
+title = "Permutations"
+aliases = ["all orderings", "arrangements", "used array"]
+code = ["algorithms/backtracking.py:permutations"]
+time = "O(n * n!)"
+space = "O(n) besides the output"
+gotcha = "With duplicate values, sort first and skip `values[i]` when it equals `values[i - 1]` and `used[i - 1]` is False."
+
+[[part.section]]
+id = "dynamic-programming"
+title = "Dynamic programming"
+intro = "Define the state, write the recurrence, then pick top-down (dict memo) or bottom-up (table). If each state only needs the last row, keep just that row."
+
+[[part.section.entry]]
+id = "memo-top-down"
+title = "Top-down with a dict memo"
+aliases = ["memoization", "lru_cache alternative", "cache", "recursion with memo", "top down dp"]
+code = ["algorithms/dynamic_programming.py:climb_stairs_memo"]
+time = "O(n)"
+space = "O(n)"
+use_when = "The recurrence is easy to write recursively. The dict replaces `functools.lru_cache`."
+gotcha = "Recursion depth equals the number of nested calls. Past about 1,000, switch to bottom-up."
+
+[[part.section.entry]]
+id = "climbing-stairs"
+title = "Bottom-up with O(1) space"
+aliases = ["climbing stairs", "fibonacci", "rolling variables", "bottom up dp"]
+code = ["algorithms/dynamic_programming.py:climb_stairs"]
+time = "O(n)"
+space = "O(1)"
+
+[[part.section.entry]]
+id = "house-robber"
+title = "House robber"
+aliases = ["no adjacent", "max non adjacent sum", "take or skip"]
+code = ["algorithms/dynamic_programming.py:house_robber"]
+time = "O(n)"
+space = "O(1)"
+
+[[part.section.entry]]
+id = "coin-change"
+title = "Coin change (fewest coins)"
+aliases = ["minimum coins", "unbounded knapsack", "make change", "amount"]
+code = ["algorithms/dynamic_programming.py:coin_change"]
+time = "O(amount * coins)"
+space = "O(amount)"
+gotcha = "To count the ways instead, put the coin loop outside the amount loop and add: `ways[total] += ways[total - coin]`."
+
+[[part.section.entry]]
+id = "knapsack"
+title = "0/1 knapsack"
+aliases = ["knapsack", "partition equal subset sum", "each item once", "capacity", "subset sum"]
+code = ["algorithms/dynamic_programming.py:knapsack"]
+time = "O(n * capacity)"
+space = "O(capacity)"
+gotcha = "Loop the capacity downward for 0/1 (each item once). Upward lets an item be reused."
+
+[[part.section.entry]]
+id = "grid-paths"
+title = "Grid paths (one row of state)"
+aliases = ["unique paths", "2d dp", "robot paths", "rolling row"]
+code = ["algorithms/dynamic_programming.py:unique_grid_paths"]
+time = "O(rows * cols)"
+space = "O(cols)"
+
+[[part.section.entry]]
+id = "lcs"
+title = "Longest common subsequence"
+aliases = ["lcs", "edit distance", "two strings dp", "2d table"]
+code = ["algorithms/dynamic_programming.py:longest_common_subsequence"]
+time = "O(n * m)"
+space = "O(n * m)"
+gotcha = "Edit distance has the same table shape: on a mismatch take `1 + min(left, up, diagonal)`."
+
+[[part.section.entry]]
+id = "lis"
+title = "Longest increasing subsequence"
+aliases = ["lis", "patience sorting", "increasing subsequence", "tails array"]
+code = ["algorithms/dynamic_programming.py:longest_increasing_subsequence"]
+time = "O(n log n)"
+space = "O(n)"
+gotcha = "`tails` is not the subsequence itself, only its length is right. The inner loop is the lower bound search from Binary search."
