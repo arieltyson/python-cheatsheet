@@ -253,3 +253,72 @@ title = "Counter"
 aliases = ["frequency", "count occurrences", "histogram", "most common", "top k frequent", "anagram check"]
 code = ["syntax/collections_tools.py:demo_counter"]
 gotcha = "`most_common(k)` is O(n log k). `total()` needs Python 3.10+."
+
+[[part.section]]
+id = "heapq"
+title = "heapq"
+intro = "`import heapq`. A min-heap stored in a plain list. Push and pop are O(log n), `heap[0]` is O(1)."
+
+[[part.section.entry]]
+id = "min-heap"
+title = "Min-heap"
+aliases = ["priority queue", "heappush", "heappop", "heapify", "smallest", "peek"]
+code = ["syntax/heaps.py:demo_min_heap"]
+gotcha = "`heapify` is O(n), faster than n pushes. Only `heap[0]` is sorted; the rest of the list is not."
+
+[[part.section.entry]]
+id = "max-heap"
+title = "Max-heap"
+aliases = ["largest first", "negative heap", "heappush_max", "kth smallest"]
+code = ["syntax/heaps.py:demo_max_heap"]
+use_when = "You need the largest item first. `heapq` is min-only, so push `-value` and negate on the way out."
+gotcha = "Python 3.14 adds `heapq.heappush_max` and `heapq.heappop_max`. Negation works on every version."
+
+[[part.section.entry]]
+id = "heap-tuples"
+title = "Priorities & tie-breakers"
+aliases = ["tuple heap", "uncomparable", "counter tiebreak", "task scheduler"]
+code = ["syntax/heaps.py:demo_heap_tuples"]
+gotcha = "Equal priorities compare the next tuple field. If that field cannot be compared, the push raises `TypeError`."
+
+[[part.section.entry]]
+id = "heap-helpers"
+title = "nlargest, nsmallest & merge"
+aliases = ["top k", "k largest", "k smallest", "merge sorted lists"]
+code = ["syntax/heaps.py:demo_heap_helpers"]
+gotcha = "`nlargest(k, items)` is O(n log k). For k = 1 use `max`; for k close to n, sort."
+
+[[part.section]]
+id = "math"
+title = "math & integer arithmetic"
+intro = "`import math`"
+
+[[part.section.entry]]
+id = "math-functions"
+title = "math functions"
+aliases = ["gcd", "lcm", "square root", "isqrt", "log", "ceil", "floor", "factorial", "prod"]
+code = ["syntax/math_tools.py:demo_math"]
+gotcha = "Use `math.isqrt(n)` for integer square roots. `int(math.sqrt(n))` can be off by one for huge n."
+
+[[part.section.entry]]
+id = "combinatorics"
+title = "Combinations & distance"
+aliases = ["n choose k", "binomial", "permutations count", "euclidean distance", "hypot"]
+code = ["syntax/math_tools.py:demo_combinatorics"]
+
+[[part.section.entry]]
+id = "integer-division"
+title = "Floor division, modulo & ceiling"
+aliases = ["negative modulo", "ceil division", "round up", "mod 1e9+7", "divmod negative"]
+code = ["syntax/math_tools.py:demo_integer_division"]
+gotcha = "`-7 // 2 == -4` in Python but `-3` in Java and C++. Use `int(a / b)` to truncate toward zero."
+
+[[part.section]]
+id = "classes"
+title = "Classes"
+
+[[part.section.entry]]
+id = "comparable-class"
+title = "A sortable, heap-ready class"
+aliases = ["__lt__", "__repr__", "__slots__", "custom object in heap", "dunder", "class"]
+code = ["syntax/classes.py:Task", "syntax/classes.py:demo_task"]
