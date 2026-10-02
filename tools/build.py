@@ -1,5 +1,8 @@
 """Compile content/site.toml and snippets/ into dist/index.html."""
 
+import base64
+import gzip
+import hashlib
 import html
 import json
 import re
@@ -25,6 +28,40 @@ SNIPPETS = ROOT / "snippets"
 MANIFEST = ROOT / "content" / "site.toml"
 WEB = ROOT / "web"
 DIST = ROOT / "dist"
+ASSETS = [
+    "favicon.svg",
+    "fonts/jetbrains-mono-subset.woff2",
+    "fonts/OFL.txt",
+]
+PAGE_BUDGET_GZIP = 150_000
+SCRIPT_BUDGET_GZIP = 4_096
+
+
+class BudgetError(RuntimeError):
+    """Raised when the built page grows past its performance budget."""
+
+
+def gzip_size(text: str) -> int:
+    return len(gzip.compress(text.encode("utf-8"), mtime=0))
+
+
+def sha256_source(text: str) -> str:
+    digest = hashlib.sha256(text.encode("utf-8")).digest()
+    return f"'sha256-{base64.b64encode(digest).decode()}'"
+
+
+def content_security_policy(styles: str, scripts: list[str]) -> str:
+    """Allow only this page's own inline code and same-origin files."""
+    script_hashes = " ".join(
+        sha256_source(script) for script in scripts
+    )
+    return (
+        "default-src 'none'; "
+        f"script-src {script_hashes}; "
+        f"style-src {sha256_source(styles)}; "
+        "font-src 'self'; img-src 'self'; "
+        "base-uri 'none'; form-action 'none'"
+    )
 
 
 def fill(template: str, slots: dict[str, str]) -> str:
@@ -179,10 +216,18 @@ def render_styles() -> str:
 
 def render_page(site: Site) -> str:
     template = (WEB / "template.html").read_text(encoding="utf-8")
+    styles = render_styles()
+    script = (WEB / "app.js").read_text(encoding="utf-8")
+    theme_script = (WEB / "theme.js").read_text(encoding="utf-8")
+    if gzip_size(script) > SCRIPT_BUDGET_GZIP:
+        raise BudgetError("app.js is over its gzipped size budget")
     return fill(
         template,
         {
-            "styles": render_styles(),
+            "csp": content_security_policy(
+                styles, [theme_script, script]
+            ),
+            "styles": styles,
             "toc": render_toc(site),
             "jump-index": jump_index(site),
             "script": (WEB / "app.js").read_text(encoding="utf-8"),
@@ -199,8 +244,14 @@ def build(output_dir: Path = DIST) -> Path:
     page = render_page(site)
     shutil.rmtree(output_dir, ignore_errors=True)
     output_dir.mkdir(parents=True)
+    if gzip_size(page) > PAGE_BUDGET_GZIP:
+        raise BudgetError("index.html is over its gzipped size budget")
     index = output_dir / "index.html"
     index.write_text(page, encoding="utf-8")
+    for asset in ASSETS:
+        target = output_dir / asset
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(WEB / asset, target)
     return index
 
 

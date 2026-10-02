@@ -1,13 +1,23 @@
 """Checks against the built dist/index.html, not the source."""
 
+import re
 import tempfile
 import unittest
 from html.parser import HTMLParser
 from itertools import pairwise
 from pathlib import Path
 
-from tools.build import MANIFEST, SNIPPETS, build
+from tools.build import (
+    MANIFEST,
+    PAGE_BUDGET_GZIP,
+    SNIPPETS,
+    WEB,
+    build,
+    gzip_size,
+    sha256_source,
+)
 from tools.manifest import load_site
+from tools.tokens import load_tokens
 
 
 class PageParser(HTMLParser):
@@ -102,6 +112,31 @@ class BuiltPageTests(unittest.TestCase):
 
     def test_language_is_set(self) -> None:
         self.assertEqual(self.parser.html_lang, "en")
+
+    def test_page_is_within_budget(self) -> None:
+        self.assertLessEqual(gzip_size(self.page), PAGE_BUDGET_GZIP)
+
+    def test_csp_allows_exactly_the_inline_code(self) -> None:
+        policy = re.search(
+            r'Content-Security-Policy" content="([^"]+)"', self.page
+        )
+        scripts = re.findall(
+            r"<script>(.*?)</script>", self.page, re.DOTALL
+        )
+        styles = re.findall(
+            r"<style>(.*?)</style>", self.page, re.DOTALL
+        )
+        self.assertEqual(len(scripts), 2)
+        for code in scripts + styles:
+            self.assertIn(sha256_source(code), policy.group(1))
+        self.assertIn("default-src 'none'", policy.group(1))
+
+    def test_icon_yellow_is_the_highlight_token(self) -> None:
+        icon = (WEB / "favicon.svg").read_text(encoding="utf-8")
+        light_highlight = load_tokens(WEB / "tokens.toml")["highlight"][
+            0
+        ]
+        self.assertIn(f'fill="{light_highlight}"', icon)
 
 
 if __name__ == "__main__":
