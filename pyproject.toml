@@ -19,3 +19,7 @@ select = ["E", "W", "F", "I", "N", "UP", "B", "SIM", "C4", "RUF"]
 
 [tool.ruff.format]
 quote-style = "double"
+
+[tool.ruff.lint.isort]
+# tomllib is 3.11+ standard library; only the 3.12+ tooling imports it.
+extra-standard-library = ["tomllib"]
