@@ -1,11 +1,21 @@
 """Compile content/site.toml and snippets/ into dist/index.html."""
 
 import html
+import re
 import shutil
 from pathlib import Path
 
 from tools.highlight import highlight
-from tools.manifest import Entry, Part, Section, Site, load_site
+from tools.manifest import (
+    CodeRef,
+    Entry,
+    Part,
+    Section,
+    Site,
+    Table,
+    load_site,
+)
+from tools.results import asserts_as_results
 from tools.source import extract
 from tools.tokens import css_variables, load_tokens
 
@@ -28,25 +38,84 @@ def fill(template: str, slots: dict[str, str]) -> str:
     return template
 
 
-def render_entry(entry: Entry) -> str:
-    title = html.escape(entry.title)
-    blocks = "\n".join(
-        f"<pre><code>{highlight(extract(SNIPPETS, ref))}</code></pre>"
-        for ref in entry.code
+INLINE_CODE = re.compile(r"`([^`]+)`")
+
+
+def inline(text: str) -> str:
+    """Escape text and turn `backticks` into <code> elements."""
+    return INLINE_CODE.sub(r"<code>\1</code>", html.escape(text))
+
+
+def render_code(ref: CodeRef) -> str:
+    source = extract(SNIPPETS, ref)
+    if ref.is_demo:
+        source = asserts_as_results(source)
+    return f"<pre><code>{highlight(source)}</code></pre>"
+
+
+def render_table(table: Table) -> str:
+    header = "".join(
+        f"<th>{inline(cell)}</th>" for cell in table.header
+    )
+    rows = "".join(
+        "<tr>"
+        + "".join(f"<td>{inline(cell)}</td>" for cell in row)
+        + "</tr>"
+        for row in table.rows
     )
     return (
-        f'<article class="entry" id="{entry.id}">'
-        f"<h4>{title}</h4>{blocks}</article>"
+        f"<table><thead><tr>{header}</tr></thead>"
+        f"<tbody>{rows}</tbody></table>"
     )
+
+
+def render_meta(entry: Entry) -> str:
+    if entry.table:
+        return ""
+    if entry.time:
+        text = f"Time {entry.time} · Space {entry.space}"
+    elif all(ref.is_class for ref in entry.code):
+        text = "Definition"
+    else:
+        text = "Syntax"
+    return f'<p class="meta">{html.escape(text)}</p>'
+
+
+def render_entry(entry: Entry) -> str:
+    parts = [
+        f'<article class="entry" id="{entry.id}">',
+        f'<h4><a href="#{entry.id}">{inline(entry.title)}</a></h4>',
+        render_meta(entry),
+    ]
+    if entry.use_when:
+        parts.append(
+            '<p class="use-when"><span class="label">Use when:</span> '
+            f"{inline(entry.use_when)}</p>"
+        )
+    parts.extend(render_code(ref) for ref in entry.code)
+    if entry.table:
+        parts.append(render_table(entry.table))
+    if entry.gotcha:
+        parts.append(
+            '<p class="gotcha"><span class="label">Gotcha:</span> '
+            f"{inline(entry.gotcha)}</p>"
+        )
+    parts.append("</article>")
+    return "".join(parts)
 
 
 def render_section(section: Section) -> str:
+    intro = (
+        f'<p class="section-intro">{inline(section.intro)}</p>'
+        if section.intro
+        else ""
+    )
     entries = "\n".join(
         render_entry(entry) for entry in section.entries
     )
     return (
         f'<section class="section" id="{section.id}">'
-        f"<h3>{html.escape(section.title)}</h3>\n{entries}</section>"
+        f"<h3>{inline(section.title)}</h3>{intro}\n{entries}</section>"
     )
 
 
