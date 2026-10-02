@@ -7,6 +7,7 @@ from pathlib import Path
 from tools.highlight import highlight
 from tools.manifest import Entry, Part, Section, Site, load_site
 from tools.source import extract
+from tools.tokens import css_variables, load_tokens
 
 ROOT = Path(__file__).resolve().parent.parent
 SNIPPETS = ROOT / "snippets"
@@ -44,7 +45,7 @@ def render_section(section: Section) -> str:
         render_entry(entry) for entry in section.entries
     )
     return (
-        f'<section id="{section.id}">'
+        f'<section class="section" id="{section.id}">'
         f"<h3>{html.escape(section.title)}</h3>\n{entries}</section>"
     )
 
@@ -57,12 +58,18 @@ def render_part(part: Part) -> str:
     )
 
 
+def render_styles() -> str:
+    tokens = load_tokens(WEB / "tokens.toml")
+    styles = (WEB / "styles.css").read_text(encoding="utf-8")
+    return css_variables(tokens) + styles
+
+
 def render_page(site: Site) -> str:
     template = (WEB / "template.html").read_text(encoding="utf-8")
     return fill(
         template,
         {
-            "styles": (WEB / "styles.css").read_text(encoding="utf-8"),
+            "styles": render_styles(),
             "content": "\n".join(render_part(p) for p in site.parts),
         },
     )
