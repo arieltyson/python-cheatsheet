@@ -4,6 +4,7 @@ import html
 import shutil
 from pathlib import Path
 
+from tools.highlight import highlight
 from tools.manifest import Entry, Part, Section, Site, load_site
 from tools.source import extract
 
@@ -29,7 +30,7 @@ def fill(template: str, slots: dict[str, str]) -> str:
 def render_entry(entry: Entry) -> str:
     title = html.escape(entry.title)
     blocks = "\n".join(
-        f"<pre><code>{html.escape(extract(SNIPPETS, ref))}</code></pre>"
+        f"<pre><code>{highlight(extract(SNIPPETS, ref))}</code></pre>"
         for ref in entry.code
     )
     return (
