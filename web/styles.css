@@ -207,6 +207,7 @@ pre code {
 .bi { color: var(--bi); }
 
 :not(pre) > code {
+  overflow-wrap: anywhere;
   font-family: var(--mono);
   font-size: 0.9375em;
   font-variant-ligatures: none;
