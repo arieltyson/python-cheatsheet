@@ -814,3 +814,69 @@ code = ["algorithms/intervals.py:min_meeting_rooms"]
 time = "O(n log n)"
 space = "O(n)"
 use_when = "The largest number of intervals open at the same moment."
+
+[[part.section]]
+id = "bfs"
+title = "Breadth-first search"
+
+[[part.section.entry]]
+id = "bfs-graph"
+title = "BFS on a graph"
+aliases = ["breadth first search", "level by level", "queue traversal", "nearest first"]
+code = ["algorithms/graph_search.py:bfs_order"]
+time = "O(V + E)"
+space = "O(V)"
+gotcha = "Mark a node visited when you enqueue it, not when you dequeue it, or it can be queued many times."
+
+[[part.section.entry]]
+id = "bfs-grid"
+title = "Shortest path in a grid"
+aliases = ["maze", "unweighted shortest path", "fewest steps", "grid bfs", "rotting oranges", "multi source bfs"]
+code = ["algorithms/graph_search.py:grid_neighbors", "algorithms/graph_search.py:shortest_path_grid"]
+time = "O(rows * cols)"
+space = "O(rows * cols)"
+use_when = "Fewest moves when every move costs the same. For several starting points, put them all in the queue at step 0."
+
+[[part.section]]
+id = "dfs"
+title = "Depth-first search"
+
+[[part.section.entry]]
+id = "dfs-recursive"
+title = "DFS, recursive"
+aliases = ["depth first search", "recursion", "explore", "connected"]
+code = ["algorithms/graph_search.py:dfs_recursive"]
+time = "O(V + E)"
+space = "O(V)"
+gotcha = "Python's default recursion limit is about 1,000 frames. Use the iterative version for long paths."
+
+[[part.section.entry]]
+id = "dfs-iterative"
+title = "DFS, iterative"
+aliases = ["explicit stack", "no recursion", "stack dfs"]
+code = ["algorithms/graph_search.py:dfs_iterative"]
+time = "O(V + E)"
+space = "O(V + E)"
+
+[[part.section.entry]]
+id = "number-of-islands"
+title = "Number of islands"
+aliases = ["connected components in grid", "flood fill", "count regions", "grid dfs"]
+code = ["algorithms/graph_search.py:count_islands"]
+time = "O(rows * cols)"
+space = "O(rows * cols)"
+use_when = "Counting or measuring connected regions. Uses `grid_neighbors` from the grid BFS entry above."
+
+[[part.section]]
+id = "topological-sort"
+title = "Topological sort"
+
+[[part.section.entry]]
+id = "kahns-algorithm"
+title = "Kahn's algorithm"
+aliases = ["topological sort", "course schedule", "dependencies", "in-degree", "build order", "detect cycle directed graph", "prerequisites"]
+code = ["algorithms/topological_sort.py:topological_order"]
+time = "O(V + E)"
+space = "O(V + E)"
+use_when = "Ordering tasks with prerequisites, or checking a directed graph for cycles."
+gotcha = "Course Schedule gives pairs as `[course, prerequisite]`, so the edge is `(prerequisite, course)`."
