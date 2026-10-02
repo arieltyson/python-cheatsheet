@@ -216,6 +216,7 @@ table {
 }
 
 th, td {
+  overflow-wrap: anywhere;
   padding: var(--space-2) var(--space-3);
   text-align: left;
   vertical-align: top;
