@@ -625,3 +625,31 @@ code = ["structures/union_find.py:UnionFind", "structures/union_find.py:demo_uni
 time = "O(α(n)) amortized per operation, effectively O(1)"
 space = "O(n)"
 use_when = "Merging groups and asking whether two items are connected, especially as edges arrive one at a time."
+
+[[part.section]]
+id = "graphs"
+title = "Graphs"
+
+[[part.section.entry]]
+id = "adjacency-list"
+title = "Adjacency list from edges"
+aliases = ["graph representation", "edge list", "neighbors", "build graph", "undirected", "directed", "weighted graph"]
+code = ["structures/graphs.py:build_graph", "structures/graphs.py:build_weighted_graph"]
+time = "O(V + E)"
+space = "O(V + E)"
+gotcha = "Nodes with no edges never appear as keys. Loop over `range(n)` when the problem gives n nodes."
+
+[[part.section.entry]]
+id = "grid-neighbors"
+title = "Grid neighbours"
+aliases = ["4 directions", "matrix neighbors", "in bounds", "up down left right", "directions"]
+code = ["structures/graphs.py:grid_neighbors"]
+time = "O(1) per cell"
+space = "O(1)"
+use_when = "Any grid problem: islands, flood fill, shortest path in a maze. Add the four diagonals for 8 directions."
+
+[[part.section.entry]]
+id = "graph-usage"
+title = "Using the helpers"
+aliases = ["graph example"]
+code = ["structures/graphs.py:demo_graphs"]
