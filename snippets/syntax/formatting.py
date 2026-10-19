@@ -1,6 +1,23 @@
 import math
 
 
+def demo_fstring_basics() -> None:
+    name, cell = "Ada", "C1"
+    assert f"Hello, {name}!" == "Hello, Ada!"
+    assert f"{name} has {len(name)} letters" == "Ada has 3 letters"
+    assert f"{name.upper()} {cell.lower()}" == "ADA c1"
+    # Use the other kind of quote inside the braces
+    values = {"A1": 10}
+    assert f"A1 is {values['A1']}" == "A1 is 10"
+    assert f"{'set' if values else 'empty'}" == "set"
+    assert f"cells: {', '.join(values)}" == "cells: A1"
+    error = ValueError("Cycle detected")
+    assert f"Error found: {error}" == "Error found: Cycle detected"
+    # + needs str() on numbers; f-strings convert for you
+    assert "Total: " + str(5) == f"Total: {5}"
+    # print(f"...") prints exactly the same text
+
+
 def demo_money() -> None:
     amount = 1234.5
     assert f"${amount:,.2f}" == "$1,234.50"

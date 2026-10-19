@@ -23,3 +23,22 @@ def topological_order(
             if in_degree[neighbor] == 0:
                 queue.append(neighbor)
     return order if len(order) == count else None
+
+
+def has_cycle(graph: dict[int, list[int]]) -> bool:
+    """Directed graph: DFS with a set for the current path."""
+    visiting, done = set(), set()
+
+    def visit(node: int) -> bool:
+        if node in visiting:  # back edge to the current path
+            return True
+        if node in done:
+            return False
+        visiting.add(node)
+        if any(visit(neighbor) for neighbor in graph.get(node, [])):
+            return True
+        visiting.remove(node)
+        done.add(node)
+        return False
+
+    return any(visit(node) for node in graph)

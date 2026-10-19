@@ -111,6 +111,13 @@ title = "f-strings & number formatting"
 intro = "Format spec: `{value:[fill][align][sign][width][,][.precision][type]}`."
 
 [[part.section.entry]]
+id = "fstring-basics"
+title = "f-string basics"
+aliases = ["f-string", "print variable", "string interpolation", "format string", "print error", "str concatenation"]
+code = ["syntax/formatting.py:demo_fstring_basics"]
+gotcha = "Before Python 3.12, the quotes inside `{}` must differ from the outer quotes: `f\"{d['key']}\"`."
+
+[[part.section.entry]]
 id = "format-money"
 title = "Format money: dollars and cents"
 aliases = ["money", "currency", "price", "two decimals", "thousands separator", "comma"]
@@ -322,6 +329,65 @@ id = "comparable-class"
 title = "A sortable, heap-ready class"
 aliases = ["__lt__", "__repr__", "__slots__", "custom object in heap", "dunder", "class"]
 code = ["syntax/classes.py:Task", "syntax/classes.py:demo_task"]
+
+[[part.section]]
+id = "errors"
+title = "Errors & exceptions"
+intro = "`try:` runs code, `except SomeError as e:` handles it, `raise SomeError(\"message\")` signals it."
+
+[[part.section.entry]]
+id = "try-except"
+title = "try / except ... as e"
+aliases = ["exception", "catch", "error handling", "error as e", "error message", "str(e)", "handle error"]
+code = ["syntax/errors.py:demo_try_except"]
+gotcha = "Python deletes `e` when the except block ends. Copy what you need (`message = str(e)`) inside the block."
+
+[[part.section.entry]]
+id = "except-clauses"
+title = "Several excepts, else & finally"
+aliases = ["multiple exceptions", "catch two errors", "finally", "try else", "cleanup", "type(e).__name__"]
+code = ["syntax/errors.py:demo_except_clauses"]
+gotcha = "The first matching `except` wins, so list specific errors before general ones. Never write a bare `except:`; use `except Exception as e:` at most."
+
+[[part.section.entry]]
+id = "raise-errors"
+title = "raise"
+aliases = ["throw", "raise ValueError", "signal error", "validate input", "invalid argument"]
+code = ["syntax/errors.py:demo_raise"]
+use_when = "A function gets input it cannot handle, or the prompt says \"raise ValueError(...)\". Copy the prompt's message exactly."
+
+[[part.section.entry]]
+id = "custom-errors"
+title = "Custom error classes"
+aliases = ["custom exception", "subclass exception", "define error", "isinstance error"]
+code = ["syntax/errors.py:CycleError", "syntax/errors.py:demo_custom_error"]
+gotcha = "Subclass the closest built-in (`ValueError`, `KeyError`) so callers that catch the built-in still work."
+
+[[part.section.entry]]
+id = "reraise"
+title = "Re-raise & chain"
+aliases = ["raise from", "wrap exception", "translate error", "__cause__", "bare raise"]
+code = ["syntax/errors.py:demo_reraise"]
+
+[[part.section.entry]]
+id = "builtin-errors"
+title = "Built-in errors you will hit"
+aliases = ["ValueError", "KeyError", "IndexError", "TypeError", "ZeroDivisionError", "AttributeError", "RecursionError", "StopIteration", "exception types", "which error"]
+
+[part.section.entry.table]
+header = ["Error", "Means", "Raised by"]
+rows = [
+  ["`ValueError`", "Right type, bad value", "`int(\"abc\")`, `max([])`, `[1].index(9)`, `a, b = [1, 2, 3]`"],
+  ["`KeyError`", "Missing dict key", "`counts[\"x\"]`, `{1}.remove(2)`; use `.get` or `in`"],
+  ["`IndexError`", "Index out of range", "`items[10]`, `[].pop()`, `heappop([])`, `deque().popleft()`"],
+  ["`TypeError`", "Wrong type", "`\"a\" + 1`, `None < 1`, `{[1]: 0}`, wrong argument count"],
+  ["`ZeroDivisionError`", "Divide by zero", "`1 / 0`, `1 // 0`, `1 % 0`"],
+  ["`AttributeError`", "Missing attribute", "`None.next`, `node.val` on an empty tree"],
+  ["`RecursionError`", "Recursion over ~1,000 deep", "Deep DFS or memo recursion; switch to an explicit stack"],
+  ["`StopIteration`", "Iterator is empty", "`next(iter([]))`; use `next(it, default)`"],
+  ["`NameError`", "Variable not defined", "Typo, or using a name before assigning it"],
+  ["`Exception`", "Base of all of the above", "`except Exception as e:` catches every one"],
+]
 
 [[part]]
 id = "structures"
@@ -880,6 +946,56 @@ time = "O(V + E)"
 space = "O(V + E)"
 use_when = "Ordering tasks with prerequisites, or checking a directed graph for cycles."
 gotcha = "Course Schedule gives pairs as `[course, prerequisite]`, so the edge is `(prerequisite, course)`."
+
+[[part.section.entry]]
+id = "dfs-cycle-check"
+title = "Cycle check with DFS"
+aliases = ["detect cycle directed graph", "visiting set", "three colours", "gray black", "back edge", "circular dependency"]
+code = ["algorithms/topological_sort.py:has_cycle"]
+time = "O(V + E)"
+space = "O(V)"
+use_when = "You walk the graph recursively anyway (formulas, imports, build steps). `visiting` is the current path; `done` skips finished nodes."
+gotcha = "Remove a node from `visiting` when its DFS returns. A node seen twice on different paths (a diamond) is not a cycle."
+
+[[part.section]]
+id = "dependency-graph"
+title = "Dependency graph: spreadsheet formulas"
+intro = "Cells are nodes and each reference is an edge. Evaluate with DFS, detect cycles with a `visiting` set, and cache values with a reverse edge map to clear what is downstream of a write."
+
+[[part.section.entry]]
+id = "spreadsheet-evaluate"
+title = "Evaluate formulas & detect cycles"
+aliases = ["spreadsheet", "excel", "cell formula", "set_cell", "get_cell", "formula evaluation", "Cycle detected", "dependency evaluation"]
+code = ["algorithms/spreadsheet.py:parse_expression", "algorithms/spreadsheet.py:Spreadsheet", "algorithms/spreadsheet.py:demo_spreadsheet"]
+time = "O(V + E) per get_cell"
+space = "O(V)"
+use_when = "Parts 1 and 2: store each cell, recurse into references on read, and raise when a key is already on the current path."
+gotcha = "Strip each term: `\"=C1 + 10\".split(\"+\")` gives `\"C1 \"`. Without the `values` memo, `=A1+A1` chains take exponential time."
+
+[[part.section.entry]]
+id = "spreadsheet-cached"
+title = "Cached reads, downstream invalidation"
+aliases = ["memoize cells", "cache invalidation", "read heavy", "reverse dependencies", "dependents", "O(1) reads", "recalculate downstream"]
+code = ["algorithms/spreadsheet.py:CachedSpreadsheet", "algorithms/spreadsheet.py:demo_cached_spreadsheet"]
+time = "get O(1) once cached; set O(upstream + downstream cells)"
+space = "O(V + E)"
+use_when = "Part 3, reads far outnumber writes. Keep `dependents` (reverse edges), check for a cycle before a write, and pop the written cell and everything downstream from the cache."
+gotcha = "Remove the key from its old references' `dependents` when a formula is overwritten, or stale edges clear cells that no longer depend on it."
+
+[[part.section.entry]]
+id = "spreadsheet-tradeoffs"
+title = "Design trade-offs to say out loud"
+aliases = ["cycle detection set vs get", "lazy vs eager", "trade-offs", "follow up", "system design"]
+
+[part.section.entry.table]
+header = ["Choice", "Pros", "Cons"]
+rows = [
+  ["Detect cycles in `get_cell`", "`set_cell` is O(1); bad formulas can be saved and fixed later, like `#REF!` in Excel", "Every uncached read walks the path; every cell downstream raises until the cycle is fixed"],
+  ["Detect cycles in `set_cell`", "The graph is always acyclic, so reads need no `visiting` set and caching is safe; the user sees the error at the edit", "Each write walks everything upstream; the rejected value is lost"],
+  ["Lazy invalidation (clear cache)", "Writes only clear entries; cells nobody reads are never recomputed", "The first read after a write pays the recompute"],
+  ["Eager recompute (topological order)", "Every read is O(1), even right after a write", "Each write recomputes all downstream cells, read or not"],
+  ["Recursive evaluation", "Short and easy to explain", "Chains over ~1,000 cells hit `RecursionError`; use an explicit stack in production"],
+]
 
 [[part.section]]
 id = "dijkstra"
