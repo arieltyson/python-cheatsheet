@@ -389,6 +389,50 @@ rows = [
   ["`Exception`", "Base of all of the above", "`except Exception as e:` catches every one"],
 ]
 
+[[part.section]]
+id = "testing"
+title = "Testing with assert"
+intro = "`assert condition, \"message\"` does nothing when the condition is true and raises `AssertionError(message)` when it is false. A full worked suite is under Dependency graph."
+
+[[part.section.entry]]
+id = "assert-basics"
+title = "assert with a message"
+aliases = ["assert", "test case", "AssertionError", "write tests", "check result", "assert message"]
+code = ["syntax/testing.py:demo_assert"]
+gotcha = "Never wrap both parts in parentheses: `assert (x == 1, \"msg\")` asserts a non-empty tuple, so it always passes. `python -O` skips asserts, so validate real input with `raise ValueError`."
+
+[[part.section.entry]]
+id = "assert-shapes"
+title = "What to compare"
+aliases = ["any order", "assert sorted", "assert in", "assert not in", "float equality", "is not None", "assert cache"]
+code = ["syntax/testing.py:demo_assert_shapes"]
+gotcha = "Compare with `==`, not `is`, except for `None`, `True` and `False`."
+
+[[part.section.entry]]
+id = "assert-raises"
+title = "Test that code raises"
+aliases = ["expect error", "assert raises", "test exception", "test cycle", "negative test"]
+code = ["syntax/testing.py:demo_assert_raises"]
+gotcha = "Without the `else`, the test passes silently when nothing raises. In `unittest`, the same check is `with self.assertRaises(ValueError):`."
+
+[[part.section.entry]]
+id = "edge-cases"
+title = "Edge cases to test"
+aliases = ["edge cases", "corner cases", "what to test", "test plan", "boundary"]
+
+[part.section.entry.table]
+header = ["Case", "Try"]
+rows = [
+  ["Empty", "`[]`, `\"\"`, `{}`, a key that was never set"],
+  ["One item", "`[5]`, a single plain cell"],
+  ["Duplicates", "`[2, 2]`, `=A1+A1`, a diamond (two paths to one node)"],
+  ["Negatives and zero", "`-10`, `0`, dividing by zero"],
+  ["Overwrite", "Set the same key twice, then read everything downstream"],
+  ["Invalid input", "Cycles, self-reference, bad strings: assert it raises"],
+  ["State after a failure", "A rejected write must leave every value unchanged"],
+  ["Large", "n = 10^5 for speed, a 2,000-deep chain for recursion"],
+]
+
 [[part]]
 id = "structures"
 title = "Data structures"
@@ -981,6 +1025,14 @@ time = "get O(1) once cached; set O(upstream + downstream cells)"
 space = "O(V + E)"
 use_when = "Part 3, reads far outnumber writes. Keep `dependents` (reverse edges), check for a cycle before a write, and pop the written cell and everything downstream from the cache."
 gotcha = "Remove the key from its old references' `dependents` when a formula is overwritten, or stale edges clear cells that no longer depend on it."
+
+[[part.section.entry]]
+id = "spreadsheet-tests"
+title = "A test suite to write live"
+aliases = ["test spreadsheet", "test cache", "test invalidation", "assert suite", "test cases", "diamond test"]
+code = ["algorithms/spreadsheet.py:demo_spreadsheet_tests"]
+use_when = "After coding Part 3. Number each case, give every assert a message, and test a plain read, a cache hit, a cascade through a diamond and a rejected cycle."
+gotcha = "`assert \"C1\" in sheet.cache` proves memoization; `not in` right after a write proves invalidation."
 
 [[part.section.entry]]
 id = "spreadsheet-tradeoffs"

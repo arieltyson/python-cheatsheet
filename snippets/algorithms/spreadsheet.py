@@ -137,3 +137,30 @@ def demo_cached_spreadsheet() -> None:
     assert message == "Error found: Cycle detected"
     # The rejected write changed nothing
     assert sheet.get_cell("C1") == 47
+
+
+def demo_spreadsheet_tests() -> None:
+    sheet = CachedSpreadsheet()
+    # 1. Plain values and an unset cell
+    sheet.set_cell("A1", "10")
+    sheet.set_cell("B1", "20")
+    assert sheet.get_cell("A1") == 10, "plain read A1"
+    assert sheet.get_cell("Z9") == 0, "unset cell reads as 0"
+    # 2. A formula, then a cached read
+    sheet.set_cell("C1", "=A1+B1")
+    assert sheet.get_cell("C1") == 30, "C1 = 10 + 20"
+    assert "C1" in sheet.cache, "C1 cached after the first read"
+    # 3. Diamond: D1 reads A1 and C1, and C1 reads A1
+    sheet.set_cell("D1", "=A1+C1")
+    assert sheet.get_cell("D1") == 40, "D1 = 10 + 30"
+    sheet.set_cell("B1", "5")
+    assert "D1" not in sheet.cache, "B1 change clears C1 and D1"
+    assert sheet.get_cell("D1") == 25, "D1 = 10 + (10 + 5)"
+    # 4. A cycle is rejected and changes nothing
+    try:
+        sheet.set_cell("A1", "=D1")
+    except ValueError as e:
+        assert str(e) == "Cycle detected", f"wrong message: {e}"
+    else:
+        raise AssertionError("expected ValueError for A1 = D1")
+    assert sheet.get_cell("D1") == 25, "rejected write kept D1"
