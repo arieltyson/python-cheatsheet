@@ -152,3 +152,26 @@ def demo_map_filter() -> None:
     assert list(filter(None, [0, 1, "", "a", None])) == [1, "a"]
     # The comprehension version is usually clearer
     assert [int(w) for w in words if int(w) > 5] == [10, 7]
+
+
+def demo_identity() -> None:
+    a = [1, 2]
+    b = [1, 2]
+    alias = a
+    # == compares values; "is" checks for the same object
+    assert (a == b) is True
+    assert (a is b) is False
+    assert (alias is a) is True
+    assert (id(alias) == id(a)) is True
+    # Use "is" only for None, True and False
+    value = None
+    assert (value is None) is True
+    # Equal hashable values hash the same: that is what keys need
+    point, same = (1, 2), (1, 2)
+    assert (hash(point) == hash(same)) is True
+    error = ""
+    try:
+        hash([1, 2])
+    except TypeError as e:
+        error = type(e).__name__
+    assert error == "TypeError"

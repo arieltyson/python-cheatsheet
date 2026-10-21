@@ -87,6 +87,13 @@ code = ["syntax/builtins.py:demo_map_filter"]
 gotcha = "`map` and `filter` return iterators, not lists. They can be read once, and `len()` on them raises `TypeError`."
 
 [[part.section.entry]]
+id = "identity-hash"
+title = "== vs is, hash & id"
+aliases = ["is vs ==", "identity", "same object", "is none", "hashable", "unhashable type", "hash function"]
+code = ["syntax/builtins.py:demo_identity"]
+gotcha = "`x is 5` or `s is \"abc\"` can seem to work because Python reuses small objects, but it is not guaranteed. Compare values with `==`."
+
+[[part.section.entry]]
 id = "conversions"
 title = "Conversions & number bases"
 aliases = ["parse int", "binary", "hex", "base 2", "read input", "map int"]
