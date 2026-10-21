@@ -72,6 +72,14 @@ use_when = "Input mixes types, like a nested list to flatten or a value that may
 gotcha = "`isinstance(True, int)` is `True` because `bool` subclasses `int`. Use `type(x) is int` to exclude bools."
 
 [[part.section.entry]]
+id = "next-iter"
+title = "next & iter"
+aliases = ["first match", "find first", "iterator", "generator", "default value", "any element of set", "is subsequence"]
+code = ["syntax/builtins.py:demo_next_iter"]
+use_when = "You need the first item that matches, or to walk a sequence by hand, like a merge of two streams."
+gotcha = "`next(it)` with no default raises `StopIteration` once the iterator is used up."
+
+[[part.section.entry]]
 id = "conversions"
 title = "Conversions & number bases"
 aliases = ["parse int", "binary", "hex", "base 2", "read input", "map int"]

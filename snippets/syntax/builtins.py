@@ -119,3 +119,21 @@ def demo_conversions() -> None:
     assert bin(11) == "0b1011"
     assert bin(11)[2:] == "1011"
     assert hex(255) == "0xff"
+
+
+def demo_next_iter() -> None:
+    numbers = [3, 8, 5, 12]
+    # First match, or a default when nothing matches
+    assert next((n for n in numbers if n > 6), None) == 8
+    assert next((n for n in numbers if n > 99), None) is None
+    # Any one item from a set, without removing it
+    assert next(iter({7})) == 7
+    # iter() makes a one-pass cursor; next() advances it
+    cursor = iter(numbers)
+    assert next(cursor) == 3
+    assert next(cursor) == 8
+    assert list(cursor) == [5, 12]
+    assert next(cursor, "done") == "done"
+    # Subsequence check: each "in" resumes where the last one stopped
+    text = iter("abracadabra")
+    assert all(char in text for char in "acd") is True
