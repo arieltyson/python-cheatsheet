@@ -13,6 +13,7 @@ ALLOWED_IMPORTS = {
     "collections",
     "functools",
     "heapq",
+    "itertools",
     "math",
 }
 MAX_LINE_LENGTH = 72

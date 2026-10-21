@@ -354,6 +354,33 @@ use_when = "\"Value at time t\" questions: the last record at or before t is `bi
 gotcha = "`key=` needs Python 3.10+. It applies to the list items only, so pass the target as the bare key value, not a tuple."
 
 [[part.section]]
+id = "itertools"
+title = "itertools"
+intro = "`from itertools import accumulate, pairwise, combinations, permutations, product, groupby, chain`. Each returns a lazy iterator."
+
+[[part.section.entry]]
+id = "accumulate-pairwise"
+title = "accumulate & pairwise"
+aliases = ["running total", "prefix sum", "running max", "adjacent pairs", "consecutive differences", "sliding pairs"]
+code = ["syntax/itertools_tools.py:demo_running_totals"]
+gotcha = "`pairwise` needs Python 3.10+. On older versions use `zip(items, items[1:])`."
+
+[[part.section.entry]]
+id = "combinatoric-iterators"
+title = "combinations, permutations & product"
+aliases = ["all pairs", "all orderings", "cartesian product", "brute force", "every subset of size k", "repeat"]
+code = ["syntax/itertools_tools.py:demo_combinatorics"]
+use_when = "A brute force to check your real answer against, or when the interviewer allows the library over writing backtracking."
+gotcha = "Output grows fast: n! permutations and 2^n subsets. Past about n = 10 for permutations, expect a timeout."
+
+[[part.section.entry]]
+id = "groupby-chain"
+title = "groupby & chain"
+aliases = ["run length encoding", "consecutive runs", "string compression", "flatten one level", "concatenate iterables"]
+code = ["syntax/itertools_tools.py:demo_groupby_chain"]
+gotcha = "Each `group` is used up once the loop moves on. Read it, e.g. with `list(group)`, before the next key."
+
+[[part.section]]
 id = "math"
 title = "math & integer arithmetic"
 intro = "`import math`"
