@@ -137,3 +137,18 @@ def demo_next_iter() -> None:
     # Subsequence check: each "in" resumes where the last one stopped
     text = iter("abracadabra")
     assert all(char in text for char in "acd") is True
+
+
+def demo_map_filter() -> None:
+    words = ["3", "10", "7"]
+    # Both return lazy iterators: wrap in list() to see the values
+    assert list(map(int, words)) == [3, 10, 7]
+    assert list(map(len, ["hi", "hey"])) == [2, 3]
+    evens = filter(lambda n: n % 2 == 0, range(7))
+    assert list(evens) == [0, 2, 4, 6]
+    # An iterator is single-use: the second pass is empty
+    assert list(evens) == []
+    # filter(None, ...) drops falsy values: 0, "", None, []
+    assert list(filter(None, [0, 1, "", "a", None])) == [1, "a"]
+    # The comprehension version is usually clearer
+    assert [int(w) for w in words if int(w) > 5] == [10, 7]

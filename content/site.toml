@@ -80,6 +80,13 @@ use_when = "You need the first item that matches, or to walk a sequence by hand,
 gotcha = "`next(it)` with no default raises `StopIteration` once the iterator is used up."
 
 [[part.section.entry]]
+id = "map-filter"
+title = "map & filter"
+aliases = ["apply to each", "transform list", "keep matching", "remove falsy", "lambda", "functional"]
+code = ["syntax/builtins.py:demo_map_filter"]
+gotcha = "`map` and `filter` return iterators, not lists. They can be read once, and `len()` on them raises `TypeError`."
+
+[[part.section.entry]]
 id = "conversions"
 title = "Conversions & number bases"
 aliases = ["parse int", "binary", "hex", "base 2", "read input", "map int"]

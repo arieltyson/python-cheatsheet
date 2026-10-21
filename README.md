@@ -41,7 +41,7 @@ Python CheatSheet is a single-page reference for Python coding interviews: <http
 ### Data Sources
 
 - [x] **snippets/**: the tested Python source shown on the page
-- [x] **content/site.toml**: sections, titles, search aliases and complexity for all 130 entries
+- [x] **content/site.toml**: sections, titles, search aliases and complexity for all 131 entries
 - [x] **web/tokens.toml**: every colour, as light and dark pairs
 
 </div>
