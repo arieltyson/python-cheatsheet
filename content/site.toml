@@ -801,6 +801,20 @@ space = "O(n)"
 use_when = "Merging groups and asking whether two items are connected, especially as edges arrive one at a time."
 
 [[part.section]]
+id = "lru-cache"
+title = "LRU cache"
+
+[[part.section.entry]]
+id = "lru-cache-template"
+title = "LRU cache with OrderedDict"
+aliases = ["lru", "least recently used", "OrderedDict", "move_to_end", "popitem", "cache eviction", "design cache"]
+code = ["structures/lru_cache.py:LRUCache", "structures/lru_cache.py:demo_lru_cache"]
+time = "O(1) per get and put"
+space = "O(capacity)"
+use_when = "\"Design an LRU cache\". If asked to build it without `OrderedDict`, use a dict of keys to nodes in a doubly linked list."
+gotcha = "`popitem(last=False)` removes the oldest key; plain `popitem()` removes the newest. A plain `dict` keeps order but has no `move_to_end`."
+
+[[part.section]]
 id = "graphs"
 title = "Graphs"
 
