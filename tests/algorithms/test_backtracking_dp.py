@@ -9,6 +9,7 @@ from snippets.algorithms.backtracking import (
 )
 from snippets.algorithms.dynamic_programming import (
     climb_stairs,
+    climb_stairs_cached,
     climb_stairs_memo,
     coin_change,
     house_robber,
@@ -58,6 +59,7 @@ class DynamicProgrammingTests(unittest.TestCase):
         for steps, ways in enumerate(expected):
             self.assertEqual(climb_stairs(steps), ways)
             self.assertEqual(climb_stairs_memo(steps), ways)
+            self.assertEqual(climb_stairs_cached(steps), ways)
 
     def test_house_robber_matches_brute_force(self) -> None:
         for _ in range(200):

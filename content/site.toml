@@ -1175,17 +1175,27 @@ gotcha = "With duplicate values, sort first and skip `values[i]` when it equals 
 [[part.section]]
 id = "dynamic-programming"
 title = "Dynamic programming"
-intro = "Define the state, write the recurrence, then pick top-down (dict memo) or bottom-up (table). If each state only needs the last row, keep just that row."
+intro = "Define the state, write the recurrence, then pick top-down (`@cache` or a dict memo) or bottom-up (table). If each state only needs the last row, keep just that row."
 
 [[part.section.entry]]
 id = "memo-top-down"
 title = "Top-down with a dict memo"
-aliases = ["memoization", "lru_cache alternative", "cache", "recursion with memo", "top down dp"]
+aliases = ["memoization", "explicit memo", "recursion with memo", "top down dp"]
 code = ["algorithms/dynamic_programming.py:climb_stairs_memo"]
 time = "O(n)"
 space = "O(n)"
-use_when = "The recurrence is easy to write recursively. The dict replaces `functools.lru_cache`."
+use_when = "Same as `@cache`, but works when an argument is unhashable, like a list, and makes the memo easy to show."
 gotcha = "Recursion depth equals the number of nested calls. Past about 1,000, switch to bottom-up."
+
+[[part.section.entry]]
+id = "memo-cache"
+title = "Top-down with @cache"
+aliases = ["functools.cache", "lru_cache", "cache decorator", "memoization", "memoize", "top down dp"]
+code = ["algorithms/dynamic_programming.py:climb_stairs_cached"]
+time = "O(n)"
+space = "O(n)"
+use_when = "The fastest way to memoize a recursive helper: `from functools import cache`, then `@cache` above it."
+gotcha = "Every argument must be hashable: pass a tuple, not a list. Define the helper inside the function so each call starts with an empty cache."
 
 [[part.section.entry]]
 id = "climbing-stairs"

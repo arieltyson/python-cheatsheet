@@ -1,3 +1,6 @@
+from functools import cache
+
+
 def climb_stairs_memo(steps: int) -> int:
     """Return the ways to climb taking 1 or 2 steps (top-down)."""
     memo = {0: 1, 1: 1}
@@ -6,6 +9,18 @@ def climb_stairs_memo(steps: int) -> int:
         if remaining not in memo:
             memo[remaining] = ways(remaining - 1) + ways(remaining - 2)
         return memo[remaining]
+
+    return ways(steps)
+
+
+def climb_stairs_cached(steps: int) -> int:
+    """Return the ways to climb taking 1 or 2 steps (@cache)."""
+
+    @cache
+    def ways(remaining: int) -> int:
+        if remaining <= 1:
+            return 1
+        return ways(remaining - 1) + ways(remaining - 2)
 
     return ways(steps)
 
