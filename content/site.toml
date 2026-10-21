@@ -333,6 +333,27 @@ code = ["syntax/heaps.py:demo_heap_helpers"]
 gotcha = "`nlargest(k, items)` is O(n log k). For k = 1 use `max`; for k close to n, sort."
 
 [[part.section]]
+id = "bisect"
+title = "bisect"
+intro = "`import bisect`. Binary search on a sorted list in O(log n)."
+
+[[part.section.entry]]
+id = "bisect-left-right"
+title = "bisect_left, bisect_right & insort"
+aliases = ["binary search library", "insert position", "sorted insert", "count in range", "first occurrence", "search insert position"]
+code = ["syntax/bisect_tools.py:demo_bisect"]
+use_when = "Any sorted-list lookup: where a value goes, whether it is there, or how many values fall in a range."
+gotcha = "`insort` finds the spot in O(log n) but inserting shifts the list, so it is O(n). Many inserts: use a heap, or sort once at the end."
+
+[[part.section.entry]]
+id = "bisect-key"
+title = "bisect with key="
+aliases = ["time based key value store", "latest at or before", "floor lookup", "search by field", "timestamps"]
+code = ["syntax/bisect_tools.py:demo_bisect_key"]
+use_when = "\"Value at time t\" questions: the last record at or before t is `bisect_right(...) - 1`."
+gotcha = "`key=` needs Python 3.10+. It applies to the list items only, so pass the target as the bare key value, not a tuple."
+
+[[part.section]]
 id = "math"
 title = "math & integer arithmetic"
 intro = "`import math`"
@@ -849,7 +870,7 @@ title = "Algorithms"
 [[part.section]]
 id = "binary-search"
 title = "Binary search"
-intro = "Written by hand, without `bisect`. The loop condition and the update must agree: `low <= high` with `middle ± 1`, or `low < high` with `high = middle`."
+intro = "Written by hand, so you can explain it. In your own code, `bisect` does the lower and upper bound for you. The loop condition and the update must agree: `low <= high` with `middle ± 1`, or `low < high` with `high = middle`."
 
 [[part.section.entry]]
 id = "binary-search-exact"
@@ -868,7 +889,7 @@ code = ["algorithms/binary_search.py:lower_bound", "algorithms/binary_search.py:
 time = "O(log n)"
 space = "O(1)"
 use_when = "First or last position of a value, where to insert it, or how many values fall in a range: `upper_bound(v, b) - lower_bound(v, a)`."
-gotcha = "Last occurrence of target is `upper_bound(values, target) - 1`, after checking that target is present."
+gotcha = "Last occurrence of target is `upper_bound(values, target) - 1`, after checking that target is present. `lower_bound` is `bisect.bisect_left`; `upper_bound` is `bisect.bisect_right`."
 
 [[part.section.entry]]
 id = "binary-search-answer"

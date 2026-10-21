@@ -8,7 +8,7 @@
 
 ## Project Description 🎨
 
-Python CheatSheet is a single-page reference for Python coding interviews: <https://arieltyson.github.io/python-cheatsheet/>. It covers the syntax that is easy to forget under pressure (collections, heapq, math, try and except with the common built-in errors, assert-based test cases, f-strings and number formatting, including dollars and cents), the core data structures with the cost of every operation, and tested templates for the common algorithm patterns, from binary search to Dijkstra. Every snippet is idiomatic modern Python with optimal time and space complexity, and imports nothing beyond `collections`, `heapq`, `math` and `functools`. The page is generated from real Python files by a build script that uses only the standard library, and CI runs every snippet's tests before deploying. All content is plain text on one page, so the browser's find (Cmd+F) always works. Pressing `/` opens a jump list for faster navigation. Its sibling, [TypeScript CheatSheet](https://github.com/arieltyson/typescript-cheatsheet), shares the same design.
+Python CheatSheet is a single-page reference for Python coding interviews: <https://arieltyson.github.io/python-cheatsheet/>. It covers the syntax that is easy to forget under pressure (collections, heapq, math, try and except with the common built-in errors, assert-based test cases, f-strings and number formatting, including dollars and cents), the core data structures with the cost of every operation, and tested templates for the common algorithm patterns, from binary search to Dijkstra. Every snippet is idiomatic modern Python with optimal time and space complexity, and imports nothing beyond `collections`, `heapq`, `math`, `functools` and `bisect`. The page is generated from real Python files by a build script that uses only the standard library, and CI runs every snippet's tests before deploying. All content is plain text on one page, so the browser's find (Cmd+F) always works. Pressing `/` opens a jump list for faster navigation. Its sibling, [TypeScript CheatSheet](https://github.com/arieltyson/typescript-cheatsheet), shares the same design.
 
 ## Screenshots:
 
@@ -41,7 +41,7 @@ Python CheatSheet is a single-page reference for Python coding interviews: <http
 ### Data Sources
 
 - [x] **snippets/**: the tested Python source shown on the page
-- [x] **content/site.toml**: sections, titles, search aliases and complexity for all 137 entries
+- [x] **content/site.toml**: sections, titles, search aliases and complexity for all 139 entries
 - [x] **web/tokens.toml**: every colour, as light and dark pairs
 
 </div>
@@ -59,7 +59,7 @@ Python CheatSheet is a single-page reference for Python coding interviews: <http
 
 - 🔎 **Cmd+F friendly**: every word on the page is plain text, nothing collapsed or hidden
 - ⚡ **Jump list**: press `/` and type "shortest path", "money" or "course schedule"
-- 🧰 **Syntax**: built-ins, strings, f-strings and number formatting, collections, heapq, math, errors and exceptions, and testing with assert
+- 🧰 **Syntax**: built-ins, strings, f-strings and number formatting, collections, heapq, bisect, math, errors and exceptions, and testing with assert
 - 🧱 **Data structures**: operation cost tables plus linked list, tree, trie, union-find and graphs
 - 🧭 **Algorithms**: binary search, two pointers, sliding window, BFS, DFS, cycle detection, topological sort, a cached spreadsheet dependency graph, Dijkstra, backtracking, DP and more
 - ⏱️ **Complexity on every snippet**: time and space stated in plain text

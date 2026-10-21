@@ -8,7 +8,13 @@ from tools.build import MANIFEST, SNIPPETS
 from tools.manifest import load_site
 from tools.source import extract
 
-ALLOWED_IMPORTS = {"collections", "functools", "heapq", "math"}
+ALLOWED_IMPORTS = {
+    "bisect",
+    "collections",
+    "functools",
+    "heapq",
+    "math",
+}
 MAX_LINE_LENGTH = 72
 MAX_FUNCTION_LINES = 25
 
