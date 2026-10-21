@@ -51,10 +51,25 @@ aliases = ["count matching", "modular power", "quotient remainder", "abs"]
 code = ["syntax/builtins.py:demo_aggregates"]
 
 [[part.section.entry]]
-id = "ord-chr"
-title = "ord & chr"
-aliases = ["ascii", "character code", "letter index", "alphabet"]
-code = ["syntax/builtins.py:demo_characters"]
+id = "ord"
+title = "ord"
+aliases = ["ascii", "character code", "code point", "letter index", "digit value"]
+code = ["syntax/builtins.py:demo_ord"]
+
+[[part.section.entry]]
+id = "chr"
+title = "chr"
+aliases = ["ascii", "character from code", "alphabet", "caesar cipher", "shift letter"]
+code = ["syntax/builtins.py:demo_chr"]
+gotcha = "`ord` and `chr` work on single characters only: `ord(\"ab\")` raises `TypeError`."
+
+[[part.section.entry]]
+id = "isinstance"
+title = "isinstance"
+aliases = ["type check", "check type", "is list", "is int", "flatten nested list", "type()"]
+code = ["syntax/builtins.py:demo_isinstance"]
+use_when = "Input mixes types, like a nested list to flatten or a value that may be an int or a str."
+gotcha = "`isinstance(True, int)` is `True` because `bool` subclasses `int`. Use `type(x) is int` to exclude bools."
 
 [[part.section.entry]]
 id = "conversions"

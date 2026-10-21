@@ -62,11 +62,51 @@ def demo_aggregates() -> None:
     assert list(reversed(numbers)) == [4, -1, 3]
 
 
-def demo_characters() -> None:
+def demo_ord() -> None:
+    # Character -> integer code point
     assert ord("a") == 97
-    assert chr(98) == "b"
+    assert ord("A") == 65
+    assert ord("0") == 48
+    # Letter index in the alphabet: 0 for "a", 25 for "z"
     assert ord("c") - ord("a") == 2
+    # Digit character -> int without int()
+    assert ord("7") - ord("0") == 7
+
+
+def demo_chr() -> None:
+    # Integer code point -> character (the inverse of ord)
+    assert chr(97) == "a"
+    assert chr(65) == "A"
+    # Alphabet index -> letter
     assert chr(ord("a") + 25) == "z"
+    # Shift a letter with wrap-around (Caesar cipher)
+    shifted = chr((ord("y") - ord("a") + 3) % 26 + ord("a"))
+    assert shifted == "b"
+    alphabet = "".join(chr(ord("a") + i) for i in range(26))
+    assert alphabet[:5] == "abcde"
+
+
+def demo_isinstance() -> None:
+    assert isinstance(42, int) is True
+    assert isinstance("42", int) is False
+    # A tuple of types matches any of them
+    assert isinstance(3.5, (int, float)) is True
+    # Subclasses count: bool is a subclass of int
+    flag = True
+    assert isinstance(flag, int) is True
+    # type() is exact, so it tells a bool from an int
+    assert (type(flag) is int) is False
+
+    def flatten(items: list) -> list:
+        flat = []
+        for item in items:
+            if isinstance(item, list):
+                flat.extend(flatten(item))
+            else:
+                flat.append(item)
+        return flat
+
+    assert flatten([1, [2, [3, 4]], 5]) == [1, 2, 3, 4, 5]
 
 
 def demo_conversions() -> None:
