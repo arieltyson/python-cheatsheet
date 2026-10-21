@@ -387,6 +387,13 @@ code = ["syntax/scope.py:demo_nonlocal"]
 use_when = "A nested `dfs` or `backtrack` helper updates a count or a best-so-far value that the outer function returns."
 gotcha = "Without `nonlocal`, `count += 1` in the helper raises `UnboundLocalError`. Inside a class method, `self.count` works too."
 
+[[part.section.entry]]
+id = "walrus"
+title = "Walrus operator :="
+aliases = ["assignment expression", "walrus", ":=", "assign in if", "assign in while", "read until"]
+code = ["syntax/scope.py:demo_walrus"]
+gotcha = "Wrap it in parentheses: `if (n := len(items)) > 10:`. Without them, `n` gets the result of the comparison."
+
 [[part.section]]
 id = "errors"
 title = "Errors & exceptions"
