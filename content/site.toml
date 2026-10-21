@@ -367,6 +367,14 @@ title = "A sortable, heap-ready class"
 aliases = ["__lt__", "__repr__", "__slots__", "custom object in heap", "dunder", "class"]
 code = ["syntax/classes.py:Task", "syntax/classes.py:demo_task"]
 
+[[part.section.entry]]
+id = "attributes"
+title = "getattr, setattr, hasattr & callable"
+aliases = ["attribute by name", "dynamic attribute", "dispatch", "command handler", "reflection", "method by string"]
+code = ["syntax/classes.py:demo_attributes"]
+use_when = "Practical rounds: route a command like `\"deposit\"` to a `handle_deposit` method with `getattr(self, \"handle_\" + name)`."
+gotcha = "`getattr(obj, name)` with no default raises `AttributeError` when the name is missing."
+
 [[part.section]]
 id = "errors"
 title = "Errors & exceptions"
