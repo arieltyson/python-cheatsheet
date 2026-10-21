@@ -376,6 +376,18 @@ use_when = "Practical rounds: route a command like `\"deposit\"` to a `handle_de
 gotcha = "`getattr(obj, name)` with no default raises `AttributeError` when the name is missing."
 
 [[part.section]]
+id = "scope"
+title = "Functions & scope"
+
+[[part.section.entry]]
+id = "nonlocal"
+title = "nonlocal in nested helpers"
+aliases = ["nested function", "closure", "counter in dfs", "UnboundLocalError", "global", "outer variable", "best so far"]
+code = ["syntax/scope.py:demo_nonlocal"]
+use_when = "A nested `dfs` or `backtrack` helper updates a count or a best-so-far value that the outer function returns."
+gotcha = "Without `nonlocal`, `count += 1` in the helper raises `UnboundLocalError`. Inside a class method, `self.count` works too."
+
+[[part.section]]
 id = "errors"
 title = "Errors & exceptions"
 intro = "`try:` runs code, `except SomeError as e:` handles it, `raise SomeError(\"message\")` signals it."
