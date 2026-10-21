@@ -11,6 +11,7 @@ from tools.source import extract
 ALLOWED_IMPORTS = {
     "bisect",
     "collections",
+    "dataclasses",
     "functools",
     "heapq",
     "itertools",

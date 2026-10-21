@@ -423,6 +423,14 @@ code = ["syntax/classes.py:demo_attributes"]
 use_when = "Practical rounds: route a command like `\"deposit\"` to a `handle_deposit` method with `getattr(self, \"handle_\" + name)`."
 gotcha = "`getattr(obj, name)` with no default raises `AttributeError` when the name is missing."
 
+[[part.section.entry]]
+id = "dataclass"
+title = "@dataclass"
+aliases = ["dataclass", "record", "struct", "model", "frozen", "default_factory", "ledger", "transaction", "value object"]
+code = ["syntax/records.py:Transaction", "syntax/records.py:Point", "syntax/records.py:demo_dataclass"]
+use_when = "Practical rounds that start with \"model a transaction, user or order\": fields, equality and a readable repr in a few lines."
+gotcha = "`tags: list[str] = []` raises `ValueError`. Use `field(default_factory=list)` for any mutable default."
+
 [[part.section]]
 id = "scope"
 title = "Functions & scope"
