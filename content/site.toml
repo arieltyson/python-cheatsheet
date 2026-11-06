@@ -211,9 +211,9 @@ title = "Lists, tuples, dicts & sets"
 [[part.section.entry]]
 id = "list-operations"
 title = "list operations"
-aliases = ["append", "pop", "insert", "remove", "extend", "array"]
+aliases = ["append", "pop", "insert", "remove", "extend", "array", "reverse list", "reverse array", "[::-1]"]
 code = ["syntax/containers.py:demo_list_operations"]
-gotcha = "`pop(0)`, `insert(0, x)` and `remove(x)` are O(n). Use `deque` for a queue."
+gotcha = "`pop(0)`, `insert(0, x)` and `remove(x)` are O(n). Use `deque` for a queue. `items.reverse()` works in place and returns `None`; `items[::-1]` returns a copy."
 
 [[part.section.entry]]
 id = "comprehensions"

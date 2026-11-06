@@ -14,6 +14,9 @@ def demo_list_operations() -> None:
     assert items.index(5) == 2
     assert items[-1] == 5
     assert items.count(1) == 1
+    # A slice with step -1 is a reversed copy; items is unchanged
+    assert items[::-1] == [5, 1, 2]
+    assert items == [2, 1, 5]
     items.reverse()
     assert items == [5, 1, 2]
     del items[0]
