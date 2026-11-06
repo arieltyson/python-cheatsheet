@@ -224,7 +224,7 @@ code = ["syntax/containers.py:demo_comprehensions"]
 [[part.section.entry]]
 id = "grid"
 title = "2D grids"
-aliases = ["matrix", "2d array", "board", "transpose", "rows and columns"]
+aliases = ["matrix", "2d array", "nested array", "list of lists", "board", "transpose", "rows and columns"]
 code = ["syntax/containers.py:demo_grid"]
 gotcha = "`[[0] * cols] * rows` makes every row the same list. Use a comprehension."
 
