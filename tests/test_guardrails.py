@@ -12,10 +12,13 @@ ALLOWED_IMPORTS = {
     "bisect",
     "collections",
     "dataclasses",
+    "datetime",
     "functools",
     "heapq",
     "itertools",
     "math",
+    "threading",
+    "time",
 }
 MAX_LINE_LENGTH = 72
 MAX_FUNCTION_LINES = 25

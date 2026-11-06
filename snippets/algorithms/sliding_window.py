@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 
 
 def max_window_sum(values: list[int], size: int) -> int:
@@ -36,3 +36,22 @@ def longest_unique_substring(text: str) -> int:
         last_seen[char] = end
         best = max(best, end - start + 1)
     return best
+
+
+def sliding_window_max(values: list[int], k: int) -> list[int]:
+    """Return the largest value in each window of size k."""
+    if k <= 0:
+        return []
+    # Indices whose values strictly decrease from front to back
+    candidates = deque()
+    result = []
+    for index, value in enumerate(values):
+        # A smaller, older value can never be the largest again
+        while candidates and values[candidates[-1]] <= value:
+            candidates.pop()
+        candidates.append(index)
+        if candidates[0] <= index - k:
+            candidates.popleft()
+        if index >= k - 1:
+            result.append(values[candidates[0]])
+    return result

@@ -20,6 +20,8 @@ def demo_combinatorics() -> None:
     assert math.perm(5, 2) == 20
     assert math.dist((0, 0), (3, 4)) == 5.0
     assert math.hypot(3, 4) == 5.0
+    # Any number of dimensions: the length of a 3D vector
+    assert math.hypot(3, 4, 0) == 5.0
 
 
 def demo_integer_division() -> None:

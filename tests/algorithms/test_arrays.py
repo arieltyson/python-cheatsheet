@@ -9,6 +9,7 @@ from snippets.algorithms.sliding_window import (
     longest_unique_substring,
     longest_with_k_distinct,
     max_window_sum,
+    sliding_window_max,
 )
 from snippets.algorithms.two_pointers import (
     is_palindrome,
@@ -135,6 +136,28 @@ class PrefixSumTests(unittest.TestCase):
                 self.assertEqual(
                     count_subarrays_with_sum(values, target), expected
                 )
+
+
+class SlidingWindowMaxTests(unittest.TestCase):
+    def test_examples(self) -> None:
+        values = [1, 3, -1, -3, 5, 3, 6, 7]
+        self.assertEqual(
+            sliding_window_max(values, 3), [3, 3, 5, 5, 6, 7]
+        )
+        self.assertEqual(sliding_window_max([], 3), [])
+        self.assertEqual(sliding_window_max([1, 2], 3), [])
+        self.assertEqual(sliding_window_max([1, 2], 0), [])
+
+    def test_matches_brute_force(self) -> None:
+        for values in random_lists(count=500, size=30):
+            if not values:
+                continue
+            k = GENERATOR.randint(1, len(values))
+            expected = [
+                max(values[start : start + k])
+                for start in range(len(values) - k + 1)
+            ]
+            self.assertEqual(sliding_window_max(values, k), expected)
 
 
 if __name__ == "__main__":

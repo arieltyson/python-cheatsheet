@@ -395,7 +395,7 @@ gotcha = "Use `math.isqrt(n)` for integer square roots. `int(math.sqrt(n))` can 
 [[part.section.entry]]
 id = "combinatorics"
 title = "Combinations & distance"
-aliases = ["n choose k", "binomial", "permutations count", "euclidean distance", "hypot"]
+aliases = ["n choose k", "binomial", "permutations count", "euclidean distance", "hypot", "vector length", "magnitude", "3D vector", "x y z"]
 code = ["syntax/math_tools.py:demo_combinatorics"]
 
 [[part.section.entry]]
@@ -404,6 +404,25 @@ title = "Floor division, modulo & ceiling"
 aliases = ["negative modulo", "ceil division", "round up", "mod 1e9+7", "divmod negative"]
 code = ["syntax/math_tools.py:demo_integer_division"]
 gotcha = "`-7 // 2 == -4` in Python but `-3` in Java and C++. Use `int(a / b)` to truncate toward zero."
+
+[[part.section]]
+id = "dates"
+title = "Dates & time"
+intro = "`from datetime import datetime, timedelta, timezone` and `import time`"
+
+[[part.section.entry]]
+id = "date-math"
+title = "Date math with timedelta"
+aliases = ["datetime", "timedelta", "total_seconds", "seconds ago", "time cutoff", "subtract time", "timestamp"]
+code = ["syntax/dates.py:demo_date_math"]
+gotcha = "Comparing a timezone-aware datetime with a naive one raises `TypeError`. `datetime` follows the wall clock, which can jump when the system time changes."
+
+[[part.section.entry]]
+id = "elapsed-time"
+title = "Elapsed time with time.monotonic"
+aliases = ["monotonic clock", "perf_counter", "measure time", "stopwatch", "duration"]
+code = ["syntax/dates.py:demo_elapsed_time"]
+use_when = "Measuring how long something took. `time.monotonic()` only moves forward; `time.time()` can jump back."
 
 [[part.section]]
 id = "classes"
@@ -697,6 +716,15 @@ code = ["structures/stack_queue.py:demo_queue"]
 gotcha = "`list.pop(0)` is O(n). `deque.popleft()` is O(1)."
 
 [[part.section.entry]]
+id = "ring-buffer"
+title = "Ring buffer with deque(maxlen)"
+aliases = ["circular buffer", "circular queue", "fixed capacity", "last N items", "overwrite oldest", "maxlen"]
+code = ["structures/stack_queue.py:demo_ring_buffer"]
+time = "O(1) per append"
+space = "O(maxlen)"
+use_when = "You want the last N items, by count rather than by time. Memory never grows."
+
+[[part.section.entry]]
 id = "valid-brackets"
 title = "Balanced brackets"
 aliases = ["valid parentheses", "matching brackets", "stack template"]
@@ -704,6 +732,29 @@ code = ["structures/stack_queue.py:is_balanced"]
 time = "O(n)"
 space = "O(n)"
 use_when = "Matching pairs, nesting, or undoing the most recent thing first."
+
+[[part.section]]
+id = "rolling-windows"
+title = "Rolling time windows"
+
+[[part.section.entry]]
+id = "rolling-window"
+title = "Thread-safe rolling time window"
+aliases = ["rolling window", "time window", "last N seconds", "expire old", "evict old", "purge old data", "thread safe", "Lock", "threading", "race condition", "timestamps", "threshold check"]
+code = ["structures/rolling_window.py:TimedValue", "structures/rolling_window.py:RollingWindow", "structures/rolling_window.py:demo_rolling_window"]
+time = "O(1) amortized per append, O(n) per check"
+space = "O(n), n = values in the window"
+use_when = "Many threads add timestamped values and you only care about the most recent stretch of time."
+gotcha = "Eviction relies on values arriving in time order. The GIL does not make a check-then-act sequence safe, so hold the lock for the whole of each method."
+
+[[part.section.entry]]
+id = "rolling-max"
+title = "Largest value in a rolling time window"
+aliases = ["rolling max", "peak in window", "max in last N seconds", "O(1) max", "monotonic deque", "time window maximum"]
+code = ["structures/rolling_window.py:RollingMax", "structures/rolling_window.py:demo_rolling_max"]
+time = "O(1) amortized per append, O(1) per peak"
+space = "O(n) worst case, usually far less"
+use_when = "You only need the largest value, so values that can never win are not worth keeping. Compare `peak()` with a threshold to answer \"was it ever this high?\"."
 
 [[part.section]]
 id = "linked-list"
@@ -1001,6 +1052,16 @@ aliases = ["no repeating characters", "last seen index", "unique window"]
 code = ["algorithms/sliding_window.py:longest_unique_substring"]
 time = "O(n)"
 space = "O(k), k = alphabet size"
+
+[[part.section.entry]]
+id = "sliding-window-max"
+title = "Sliding window maximum"
+aliases = ["monotonic deque", "monotonic queue", "max of each window", "window maximum", "max in window"]
+code = ["algorithms/sliding_window.py:sliding_window_max"]
+time = "O(n)"
+space = "O(k)"
+use_when = "The largest (or, with `>=`, smallest) value in every window. For a window measured in time, see Rolling time windows."
+gotcha = "Store indices, not values: the index tells you when the front has left the window."
 
 [[part.section]]
 id = "prefix-sums"

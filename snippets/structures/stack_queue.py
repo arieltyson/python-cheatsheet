@@ -22,6 +22,15 @@ def demo_queue() -> None:
     assert len(queue) == 1
 
 
+def demo_ring_buffer() -> None:
+    # maxlen makes a deque drop the oldest item when it is full
+    ring = deque(maxlen=3)
+    for value in range(1, 6):
+        ring.append(value)
+    assert list(ring) == [3, 4, 5]
+    assert len(ring) == 3
+
+
 def is_balanced(text: str) -> bool:
     """Return True if every bracket in text closes in order."""
     opening_for = {")": "(", "]": "[", "}": "{"}
