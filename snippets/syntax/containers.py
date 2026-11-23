@@ -34,6 +34,29 @@ def demo_comprehensions() -> None:
     assert [value for row in nested for value in row] == [1, 2, 3]
 
 
+def demo_comprehension_patterns() -> None:
+    # Shape: [expression for name in iterable if condition]
+    n = 3
+    # Each element can itself be a list: one coordinate per item
+    assert [[i, i] for i in range(n)] == [[0, 0], [1, 1], [2, 2]]
+    anti = [[i, n - 1 - i] for i in range(n)]
+    assert anti == [[0, 2], [1, 1], [2, 0]]
+    # Two for clauses read left to right, like nested loops
+    cells = [(r, c) for r in range(2) for c in range(2)]
+    assert cells == [(0, 0), (0, 1), (1, 0), (1, 1)]
+    # A comprehension INSIDE one builds rows: a 2D grid
+    grid = [[r * n + c for c in range(n)] for r in range(n)]
+    assert grid == [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+    # if at the end filters; if/else before for picks a value
+    assert [x for x in range(5) if x % 2] == [1, 3]
+    assert [x if x % 2 else 0 for x in range(4)] == [0, 1, 0, 3]
+    # Without brackets it's a generator: lazy, no list built
+    assert all(grid[i][i] % 4 == 0 for i in range(n))
+    assert any(value == 5 for row in grid for value in row)
+    assert sum(grid[i][n - 1 - i] for i in range(n)) == 12
+    # Underscore when the loop variable isn't used
+    assert [[0] * 2 for _ in range(2)] == [[0, 0], [0, 0]]
+
 def demo_grid() -> None:
     rows, cols = 2, 3
     grid = [[0] * cols for _ in range(rows)]

@@ -218,8 +218,9 @@ gotcha = "`pop(0)`, `insert(0, x)` and `remove(x)` are O(n). Use `deque` for a q
 [[part.section.entry]]
 id = "comprehensions"
 title = "Comprehensions"
-aliases = ["list comprehension", "dict comprehension", "set comprehension", "flatten", "filter", "map"]
-code = ["syntax/containers.py:demo_comprehensions"]
+aliases = ["list comprehension", "dict comprehension", "set comprehension", "flatten", "filter", "map", "nested comprehension", "generator expression", "all any sum", "coordinates", "diagonal", "for in range"]
+code = ["syntax/containers.py:demo_comprehensions", "syntax/containers.py:demo_comprehension_patterns"]
+gotcha = "A trailing `if` filters; `a if cond else b` before `for` chooses a value. Multiple `for` clauses nest left to right."
 
 [[part.section.entry]]
 id = "grid"
