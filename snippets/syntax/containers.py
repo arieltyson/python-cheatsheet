@@ -57,6 +57,7 @@ def demo_comprehension_patterns() -> None:
     # Underscore when the loop variable isn't used
     assert [[0] * 2 for _ in range(2)] == [[0, 0], [0, 0]]
 
+
 def demo_grid() -> None:
     rows, cols = 2, 3
     grid = [[0] * cols for _ in range(rows)]
