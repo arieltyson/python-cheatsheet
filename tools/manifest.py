@@ -31,6 +31,8 @@ class CodeRef:
 class Table:
     header: tuple[str, ...]
     rows: tuple[tuple[str, ...], ...]
+    # First-column code is drawn like an editor (Dracula, Fira Code)
+    code_first_column: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -76,6 +78,7 @@ class Site:
 
 PART_KEYS = {"id", "title", "section"}
 SECTION_KEYS = {"id", "title", "intro", "entry"}
+TABLE_KEYS = {"header", "rows", "code_first_column"}
 ENTRY_KEYS = {
     "id",
     "title",
@@ -237,4 +240,8 @@ def _parse_table(table: dict, where: str) -> Table:
         raise ManifestError(f"{where}: table needs a header and rows")
     if any(len(row) != len(header) for row in rows):
         raise ManifestError(f"{where}: every row must match the header")
-    return Table(header, rows)
+    _check_keys(table, TABLE_KEYS, f"{where} table")
+    code_first_column = table.get("code_first_column", False)
+    if not isinstance(code_first_column, bool):
+        raise ManifestError(f"{where}: code_first_column is true/false")
+    return Table(header, rows, code_first_column)

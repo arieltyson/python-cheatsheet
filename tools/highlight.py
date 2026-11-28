@@ -127,3 +127,37 @@ def _split_lines(segments: list[Segment]) -> list[str]:
             )
     lines.append("".join(current))
     return lines
+
+
+def highlight_inline(source: str) -> str:
+    """Colour one short line of Python, such as a type name, for prose.
+
+    Keywords, built-ins and capitalised names (classes) get classes;
+    everything else is plain text. Anything that won't tokenize is
+    returned escaped and uncoloured.
+    """
+    try:
+        tokens = list(
+            tokenize.generate_tokens(io.StringIO(source).readline)
+        )
+    except (tokenize.TokenError, SyntaxError):
+        return html.escape(source, quote=False)
+    parts: list[str] = []
+    position = 0
+    for tok in tokens:
+        if tok.type != token.NAME or tok.start[0] != 1:
+            continue
+        start, end = tok.start[1], tok.end[1]
+        if tok.string in KEYWORDS:
+            css_class = "kw"
+        elif tok.string in BUILTINS:
+            css_class = "bi"
+        elif tok.string[:1].isupper():
+            css_class = "fn"
+        else:
+            continue
+        parts.append(html.escape(source[position:start], quote=False))
+        parts.append(f'<span class="{css_class}">{tok.string}</span>')
+        position = end
+    parts.append(html.escape(source[position:], quote=False))
+    return "".join(parts)

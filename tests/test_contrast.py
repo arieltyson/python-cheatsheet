@@ -13,6 +13,7 @@ TEXT_ON = {
     "link": ["bg", "surface", "code-bg"],
 }
 SYNTAX = ["kw", "str", "num", "com", "fn", "bi"]
+EDITOR = ["editor-fg", "editor-kw", "editor-type"]
 
 
 def channels(color: str) -> tuple[float, float, float, float]:
@@ -78,6 +79,10 @@ class ContrastTests(unittest.TestCase):
     def test_syntax_colors_on_code(self) -> None:
         for token in SYNTAX:
             self.assert_readable(token, "code-bg")
+
+    def test_editor_colors_on_dracula(self) -> None:
+        for token in EDITOR:
+            self.assert_readable(token, "editor-bg")
 
     def test_contrast_math(self) -> None:
         black, white = (0, 0, 0), (255, 255, 255)

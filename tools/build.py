@@ -9,7 +9,7 @@ import re
 import shutil
 from pathlib import Path
 
-from tools.highlight import highlight
+from tools.highlight import highlight, highlight_inline
 from tools.manifest import (
     CodeRef,
     Entry,
@@ -34,6 +34,8 @@ ASSETS = [
     "og-image.png",
     "fonts/jetbrains-mono-subset.woff2",
     "fonts/OFL.txt",
+    "fonts/fira-code-subset.woff2",
+    "fonts/FiraCode-OFL.txt",
 ]
 PAGE_BUDGET_GZIP = 150_000
 SCRIPT_BUDGET_GZIP = 4_096
@@ -86,6 +88,23 @@ def inline(text: str) -> str:
     return INLINE_CODE.sub(r"<code>\1</code>", html.escape(text))
 
 
+def inline_code(text: str) -> str:
+    """Like inline(), but colour the code the way an editor would."""
+    pieces = INLINE_CODE.split(text)
+    return "".join(
+        f'<code class="editor">{highlight_inline(piece)}</code>'
+        if index % 2
+        else html.escape(piece)
+        for index, piece in enumerate(pieces)
+    )
+
+
+def cell_html(table: Table, column: int, cell: str) -> str:
+    if column == 0 and table.code_first_column:
+        return inline_code(cell)
+    return inline(cell)
+
+
 def render_code(ref: CodeRef) -> str:
     source = extract(SNIPPETS, ref)
     if ref.is_demo:
@@ -99,13 +118,17 @@ def render_table(table: Table) -> str:
     )
     rows = "".join(
         "<tr>"
-        + "".join(f"<td>{inline(cell)}</td>" for cell in row)
+        + "".join(
+            f"<td>{cell_html(table, column, cell)}</td>"
+            for column, cell in enumerate(row)
+        )
         + "</tr>"
         for row in table.rows
     )
     return (
-        f"<table><thead><tr>{header}</tr></thead>"
-        f"<tbody>{rows}</tbody></table>"
+        f'<div class="table-scroll"><table>'
+        f"<thead><tr>{header}</tr></thead>"
+        f"<tbody>{rows}</tbody></table></div>"
     )
 
 
@@ -216,6 +239,17 @@ def render_styles() -> str:
     return css_variables(tokens) + styles
 
 
+def render_part_nav(site: Site) -> str:
+    return "".join(toc_link(part.id, part.title) for part in site.parts)
+
+
+def icon_url() -> str:
+    """Return the favicon path with a content hash, so browsers that
+    cache icons aggressively pick up a new one."""
+    digest = hashlib.sha256((WEB / "favicon.svg").read_bytes())
+    return f"favicon.svg?v={digest.hexdigest()[:8]}"
+
+
 def render_page(site: Site) -> str:
     template = (WEB / "template.html").read_text(encoding="utf-8")
     styles = render_styles()
@@ -231,6 +265,9 @@ def render_page(site: Site) -> str:
             ),
             "styles": styles,
             "toc": render_toc(site),
+            "part-nav": render_part_nav(site),
+            "icon": icon_url(),
+            "brand-icon": icon_url(),
             "jump-index": jump_index(site),
             "script": (WEB / "app.js").read_text(encoding="utf-8"),
             "theme-script": (WEB / "theme.js").read_text(

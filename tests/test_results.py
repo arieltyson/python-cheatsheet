@@ -21,7 +21,23 @@ class AssertsAsResultsTests(unittest.TestCase):
     def test_membership_and_negation(self) -> None:
         self.assertEqual(
             asserts_as_results("assert 'a' in word\nassert not word"),
-            "'a' in word  # True\nnot word     # True",
+            "'a' in word  # True\nword         # False",
+        )
+
+    def test_and_splits_into_one_result_per_line(self) -> None:
+        self.assertEqual(
+            asserts_as_results("assert a == 1 and b.isdigit()").split(
+                "\n"
+            ),
+            ["a            # 1", "b.isdigit()  # True"],
+        )
+
+    def test_trailing_note_moves_above(self) -> None:
+        self.assertEqual(
+            asserts_as_results("if x:\n    assert x == 2  # why").split(
+                "\n"
+            ),
+            ["if x:", "    # why", "    x  # 2"],
         )
 
     def test_is_none(self) -> None:
