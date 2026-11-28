@@ -103,6 +103,7 @@ def demo_rounding() -> None:
     assert int(2.9) == 2
     assert int(-2.9) == -2
     assert int(0.30) == 0
-    assert int(round(0.30 * 100)) == 30  # dollars to cents
+    # round() with no digits already returns an int
+    assert round(0.30 * 100) == 30  # dollars to cents
     assert math.floor(-2.9) == -3
     assert math.ceil(2.1) == 3
