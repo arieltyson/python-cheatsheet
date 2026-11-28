@@ -395,7 +395,7 @@ id = "zip"
 title = "zip: pairs, dicts & neighbours"
 aliases = ["zip", "zip two lists", "pair up lists", "zip strict", "neighbours", "adjacent pairs", "tuple [0] [1]"]
 code = ["syntax/sequences.py:demo_zip"]
-gotcha = "`zip(a, b)` stops at the shorter list without any error; pass `strict=True` (3.10+) to raise instead. Each pair is a tuple, read with `[0]` and `[1]` or unpacked in `for x, y in zip(a, b)`. `zip(xs, xs[1:])` gives each item with its next neighbour, and `itertools.pairwise` does the same."
+gotcha = "Plain `zip(a, b)` stops at the shorter list without any error. Say which you mean: `strict=False` to stop quietly, or `strict=True` (3.10+) to raise when the lengths differ; linters such as Ruff ask for it. Each pair is a tuple, read with `[0]` and `[1]` or unpacked in `for x, y in zip(a, b, strict=True)`. `itertools.pairwise(xs)` gives each item with its next neighbour."
 
 [[part.section]]
 id = "collections"

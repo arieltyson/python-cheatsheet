@@ -1,4 +1,5 @@
 from bisect import insort
+from itertools import pairwise
 
 
 def demo_find_and_insert() -> None:
@@ -25,16 +26,16 @@ def demo_find_and_insert() -> None:
 def demo_zip() -> None:
     names = ["ada", "bo"]
     scores = [90, 85, 70]
-    # zip pairs items by position and STOPS at the shorter list
-    assert list(zip(names, scores)) == [("ada", 90), ("bo", 85)]
-    lines = [
-        f"{name} scored {score}" for name, score in zip(names, scores)
-    ]
+    # zip pairs items by position. strict=False STOPS at the shorter
+    # list; strict=True raises ValueError if the lengths differ
+    pairs = list(zip(names, scores, strict=False))
+    assert pairs == [("ada", 90), ("bo", 85)]
+    lines = [f"{name} scored {score}" for name, score in pairs]
     assert lines == ["ada scored 90", "bo scored 85"]
     # Each pair is a tuple: [0] from the first list, [1] the second
-    first = next(zip(names, scores))
-    assert first[0] == "ada"
-    assert first[1] == 90
-    assert dict(zip(names, scores)) == {"ada": 90, "bo": 85}
-    # Neighbours: zip a list with itself shifted by one
-    assert [a - b for a, b in zip(scores, scores[1:])] == [5, 15]
+    assert pairs[0][0] == "ada"
+    assert pairs[0][1] == 90
+    by_name = dict(zip(names, scores[:2], strict=True))
+    assert by_name == {"ada": 90, "bo": 85}
+    # Neighbours: each item with the next one
+    assert [a - b for a, b in pairwise(scores)] == [5, 15]
