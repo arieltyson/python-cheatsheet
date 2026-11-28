@@ -41,7 +41,7 @@ Python CheatSheet is a single-page reference for Python coding interviews: <http
 ### Data Sources
 
 - [x] **snippets/**: the tested Python source shown on the page
-- [x] **content/site.toml**: sections, titles, search aliases and complexity for all 143 entries
+- [x] **content/site.toml**: sections, titles, search aliases and complexity for all 166 entries
 - [x] **web/tokens.toml**: every colour, as light and dark pairs
 
 </div>
@@ -59,9 +59,10 @@ Python CheatSheet is a single-page reference for Python coding interviews: <http
 
 - 🔎 **Cmd+F friendly**: every word on the page is plain text, nothing collapsed or hidden
 - ⚡ **Jump list**: press `/` and type "shortest path", "money" or "course schedule"
-- 🧰 **Syntax**: built-ins, strings, f-strings and number formatting, collections, heapq, bisect, itertools, math, classes and dataclasses, errors and exceptions, and testing with assert
+- 🧰 **Syntax**: a table of every built-in type and when to use it, equality and frozen dataclasses, read-only properties, built-ins, strings, f-strings and number formatting, finding and inserting, sum by key, zip, collections, heapq, bisect, itertools, math, fixed dates, classes and dataclasses, and errors and exceptions
 - 🧱 **Data structures**: operation cost tables plus linked list, tree, trie, union-find and graphs
 - 🧭 **Algorithms**: binary search, two pointers, sliding window, BFS, DFS, cycle detection, topological sort, a cached spreadsheet dependency graph, Dijkstra, backtracking, DP and more
+- 🧪 **Testing**: a unittest file from scratch that runs in this repo's own tests, what a TestCase gives you, checking exceptions, parameterized tests with subTest and pytest, and testing with assert
 - ⏱️ **Complexity on every snippet**: time and space stated in plain text
 - 📋 **Copy buttons**: one click copies an entry's code
 - 🌗 **Light and dark**: follows the system, with a manual toggle

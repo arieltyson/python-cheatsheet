@@ -7,6 +7,79 @@ id = "syntax"
 title = "Syntax"
 
 [[part.section]]
+id = "types"
+title = "Types & data modelling"
+
+[[part.section.entry]]
+id = "python-types"
+title = "Python's types at a glance"
+aliases = ["types", "all types", "kinds of types", "which type should I use", "mutable vs immutable", "value vs reference", "type hints", "list dict set tuple", "dataclass vs NamedTuple", "Enum", "Protocol", "Callable", "Optional", "type alias", "int float Decimal bool"]
+
+[part.section.entry.table]
+code_first_column = true
+header = ["Type", "Mutable?", "Best for", "Nuances"]
+rows = [
+  ["`int`", "No", "Counts, indexes and money in cents", "No overflow: it grows as needed. `//` floors toward minus infinity, and `int(2.9)` drops the fraction"],
+  ["`float`", "No", "Measurements and ratios", "Binary, so `0.1 + 0.2 != 0.3`. Compare with `math.isclose`, never store money in it"],
+  ["`Decimal`", "No", "Exact base-10 money when cents won't do", "Build it from a string, `Decimal(\"0.10\")`. `Decimal(0.1)` copies the float's error"],
+  ["`bool`", "No", "Flags and yes/no answers", "A subclass of `int`, so `True + True == 2` and `sum(flags)` counts the true ones"],
+  ["`str`", "No", "Text", "Every change makes a new string. Build with a list and `\"\".join(parts)`, not `+=` in a loop"],
+  ["`list[int]`", "Yes", "Ordered items you add to and change", "`append` and `pop()` are O(1), `insert(0, x)` and `pop(0)` are O(n). Assignment shares the list: copy with `items[:]`"],
+  ["`tuple[int, str]`", "No", "Fixed groups, return values, dict keys", "Hashable when its contents are. `(x,)` needs the comma"],
+  ["`dict[str, int]`", "Yes", "Lookup by key", "Keeps insertion order. Keys must be hashable. `d.get(k, 0)` for a default"],
+  ["`set[int]`", "Yes", "Membership tests and removing duplicates", "No order. `frozenset` is the immutable, hashable version"],
+  ["`str | None`", "n/a", "A value that may be missing", "Test with `is None`, not `==` or truthiness, because `\"\"` and `0` are falsy too"],
+  ["`class`", "Yes", "Objects with behaviour and their own state", "Compares by identity until you write `__eq__`. Every variable holds a reference, so two names can share one object"],
+  ["`@dataclass`", "Yes, or no with `frozen=True`", "Records: a transaction, a point, a form draft", "Writes `__init__`, `__repr__` and `__eq__`. `frozen=True` also makes it hashable. Use `field(default_factory=list)` for list defaults"],
+  ["`NamedTuple`", "No", "Lightweight read-only records", "A tuple underneath, so it unpacks and indexes, and compares equal to a plain tuple"],
+  ["`Enum`", "No", "A fixed set of choices or states", "Members are singletons: compare with `is` or `==`. `.value` and `.name` give the parts"],
+  ["`Protocol`", "n/a", "Describing what an object can do, for type checkers", "Duck typing with names: any class with the right methods fits, no inheritance needed"],
+  ["`Callable[[int], bool]`", "n/a", "Passing functions around: keys, callbacks", "A `lambda` holds one expression. Closures capture variables, not their values at the time"],
+  ["`type Cents = int`", "n/a", "A clearer name for an existing type", "Python 3.12+. Not a new type: an `int` still fits where `Cents` is expected"],
+]
+
+[[part.section.entry]]
+id = "public-interface"
+title = "Designing a class's public interface"
+aliases = ["public interface", "API design", "design a class", "where to start", "read write interface", "methods vs properties", "nouns verbs", "state the interface first", "derived values"]
+
+[part.section.entry.table]
+header = ["Look in the prompt for", "It becomes", "Example: a to-do list"]
+rows = [
+  ["Nouns (the things)", "Types: a dataclass per record, a class for the owner", "`@dataclass class Task`, `class TodoList`"],
+  ["Facts about each thing", "Fields", "`id`, `title`, `due`"],
+  ["Verbs (what callers do)", "Methods that change state", "`add(title, due)`, `complete(task_id)`"],
+  ["Questions callers ask", "Read-only `@property` values, computed on read", "`overdue`, `open_count`"],
+  ["Ways an action fails", "A custom exception, raised by the method", "`class TodoError(ValueError)`"],
+  ["Who makes IDs", "The owner generates them", "`uuid4()` or a counter inside `add`"],
+  ["The stored data itself", "A `_private` attribute behind a property", "`self._tasks`, read through `tasks`"],
+]
+
+[[part.section.entry]]
+id = "equality"
+title = "Equality, hashing & frozen dataclasses"
+aliases = ["__eq__", "==", "equality", "compare objects", "same id different values", "hashable dataclass", "frozen", "replace", "dataclasses.replace", "has the form changed", "unhashable type"]
+code = ["syntax/modelling.py:Note", "syntax/modelling.py:demo_equality"]
+use_when = "Comparing a draft with the saved copy, expected with actual in a test, or putting records in a set or dict."
+gotcha = "`==` asks whether the values match; `is` asks whether it is the same object. A plain class only knows `is` until you write `__eq__`, which `@dataclass` does for you. A dataclass with `eq=True` and no `frozen=True` is unhashable, so it can't go in a set; `frozen=True` fixes that and makes edits go through `replace(obj, field=new)`, which returns a changed copy."
+
+[[part.section.entry]]
+id = "read-only"
+title = "Read-only from outside: _private & @property"
+aliases = ["private", "_private", "read only", "@property", "property", "getter", "private(set)", "encapsulation", "computed property", "derived value", "can't set attribute"]
+code = ["syntax/modelling.py:Shelf", "syntax/modelling.py:demo_read_only"]
+use_when = "Callers should read data but change it only through your methods."
+gotcha = "Python has no real `private`: a leading `_` means \"internal, don't touch\", and everyone respects it. A `@property` with no setter is read-only, and computing it on every read means it can never go stale. Return a tuple or a copy, because returning the internal list lets callers `append` to it."
+
+[[part.section.entry]]
+id = "optional-parameters"
+title = "Optional parameters: pass only what changes"
+aliases = ["optional parameter", "default None", "keyword only", "*,", "partial update", "edit some fields", "default argument", "mutable default argument"]
+code = ["syntax/modelling.py:Profile", "syntax/modelling.py:demo_optional_parameters"]
+use_when = "An edit where the caller may change any subset of fields."
+gotcha = "The `*` makes every following parameter keyword-only, so calls read `updated(city=\"Paris\")`. Test `is None`, not truthiness, or `\"\"` and `0` are treated as missing. Never use a mutable default (`def f(items=[])`): the one list is shared across every call, so default to `None` and create it inside."
+
+[[part.section]]
 id = "builtins"
 title = "Built-ins & sorting"
 
@@ -200,9 +273,9 @@ code = ["syntax/formatting.py:demo_debugging"]
 [[part.section.entry]]
 id = "rounding"
 title = "Rounding, floor & ceil"
-aliases = ["round half", "banker's rounding", "truncate", "floor", "ceil"]
+aliases = ["round half", "banker's rounding", "truncate", "floor", "ceil", "int(0.30)", "float to int", "dollars to cents", "drops the decimal"]
 code = ["syntax/formatting.py:demo_rounding"]
-gotcha = "For money, round integer cents, not floats."
+gotcha = "For money, round integer cents, not floats. `int(x)` never rounds: it drops the fraction, so `int(0.30)` is `0`. Convert dollars to cents with `round(dollars * 100)`, or better, keep cents as `int` from the start."
 
 [[part.section]]
 id = "containers"
@@ -271,6 +344,58 @@ id = "infinity"
 title = "Infinity & big integers"
 aliases = ["inf", "max int", "integer overflow", "sentinel"]
 code = ["syntax/containers.py:demo_infinity"]
+
+[[part.section.entry]]
+id = "find-and-insert"
+title = "Find a position & insert: index, next() & insert"
+aliases = ["index of element", "list.index", "find index", "first match", "next default", "insert at index", "insert(i, x)", "keep list sorted", "sorted insert", "one past the end", "ValueError is not in list"]
+code = ["syntax/sequences.py:demo_find_and_insert"]
+time = "O(n) find + O(n) shift"
+space = "O(1)"
+gotcha = "`list.index(x)` finds an equal value and raises `ValueError` when it is missing. `next((i for i, v in enumerate(xs) if test), None)` returns the first matching index or your default, without raising. `insert(i, x)` places `x` at `i` and shifts the rest right; `len(xs)` is one past the end, so inserting there appends. With `<=` in the test a new item goes before equal ones; with `<`, after them."
+
+[[part.section.entry]]
+id = "update-in-place"
+title = "Update or delete an item by id"
+aliases = ["update by id", "edit by id", "replace element", "delete by id", "upsert", "items[i] =", "del list[i]", "change an element"]
+code = ["syntax/modelling.py:demo_update_in_place"]
+time = "O(n)"
+space = "O(1)"
+gotcha = "Writing `items[i] = new` keeps the position, so order and length stay the same. Check for `None` before using the index, because `items[None]` raises `TypeError`. To remove every match at once, rebuild the list: `items = [x for x in items if x.id != gone]`."
+
+[[part.section.entry]]
+id = "sum-by-key"
+title = "Sum by key, transform values & remove a key"
+aliases = ["sum by key", "total per category", "group and sum", "defaultdict(int)", "dict.get default", "Counter add", "map values", "remove key", "del dict key", "no zero entries"]
+code = ["syntax/modelling.py:demo_sum_by_key"]
+time = "O(n)"
+space = "O(k) for k keys"
+gotcha = "`defaultdict(int)` starts a missing key at 0, so `+=` works the first time. `del d[key]` removes a key (and raises if it is missing; `d.pop(key, None)` doesn't). Storing `0` instead leaves an entry behind. Dicts compare equal regardless of insertion order."
+
+[[part.section.entry]]
+id = "reduce"
+title = "sum & reduce step by step"
+aliases = ["reduce", "functools.reduce", "running total", "accumulator", "fold", "sum a field", "total of list", "sum generator"]
+code = ["syntax/modelling.py:Purchase", "syntax/modelling.py:demo_reduce"]
+time = "O(n)"
+space = "O(1)"
+gotcha = "`sum(p.cents for p in cart)` is the readable way to total a field. `reduce(fn, items, start)` calls `fn(running, item)` for each item and keeps what it returns; always pass `start`, or an empty list raises `TypeError`."
+
+[[part.section.entry]]
+id = "attribute-map"
+title = "Pull one field from every item: comprehensions & attrgetter"
+aliases = ["map", "pluck", "extract field", "list of names", "attrgetter", "operator.attrgetter", "itemgetter", "projection", "transform each element"]
+code = ["syntax/modelling.py:demo_attribute_map"]
+time = "O(n)"
+space = "O(n) for the new list"
+gotcha = "A comprehension always builds a NEW list in the same order and leaves the original alone. `attrgetter(\"item\")` is a ready-made function that reads `.item`, handy as a `key=` for `sorted`, `min` and `max`. Use `itemgetter(0)` for tuples and dicts."
+
+[[part.section.entry]]
+id = "zip"
+title = "zip: pairs, dicts & neighbours"
+aliases = ["zip", "zip two lists", "pair up lists", "zip strict", "neighbours", "adjacent pairs", "tuple [0] [1]"]
+code = ["syntax/sequences.py:demo_zip"]
+gotcha = "`zip(a, b)` stops at the shorter list without any error; pass `strict=True` (3.10+) to raise instead. Each pair is a tuple, read with `[0]` and `[1]` or unpacked in `for x, y in zip(a, b)`. `zip(xs, xs[1:])` gives each item with its next neighbour, and `itertools.pairwise` does the same."
 
 [[part.section]]
 id = "collections"
@@ -419,6 +544,14 @@ code = ["syntax/dates.py:demo_date_math"]
 gotcha = "Comparing a timezone-aware datetime with a naive one raises `TypeError`. `datetime` follows the wall clock, which can jump when the system time changes."
 
 [[part.section.entry]]
+id = "fixed-dates"
+title = "Fixed dates: timestamps & the Unix epoch"
+aliases = ["fromtimestamp", "timestamp", "1970", "Unix epoch", "epoch", "86_400", "86400", "seconds in a day", "fixed date for tests", "deterministic dates", "datetime.now in tests", "UTC", "timezone.utc"]
+code = ["syntax/dates.py:demo_fixed_dates"]
+use_when = "Tests and sample data that must give the same answer every run. Never `datetime.now()` in a test."
+gotcha = "A timestamp is seconds since the Unix epoch, 1 January 1970 00:00 UTC (a Thursday), so 86,400 is one day later. The `_` in `86_400` is only a digit separator. Always pass `tz=timezone.utc`: without it, `fromtimestamp` uses the machine's local zone and the test changes with the computer it runs on. Local days can be 23 or 25 hours around daylight saving, so do calendar maths in a real time zone (`zoneinfo`)."
+
+[[part.section.entry]]
 id = "elapsed-time"
 title = "Elapsed time with time.monotonic"
 aliases = ["monotonic clock", "perf_counter", "measure time", "stopwatch", "duration"]
@@ -527,50 +660,6 @@ rows = [
   ["`StopIteration`", "Iterator is empty", "`next(iter([]))`; use `next(it, default)`"],
   ["`NameError`", "Variable not defined", "Typo, or using a name before assigning it"],
   ["`Exception`", "Base of all of the above", "`except Exception as e:` catches every one"],
-]
-
-[[part.section]]
-id = "testing"
-title = "Testing with assert"
-intro = "`assert condition, \"message\"` does nothing when the condition is true and raises `AssertionError(message)` when it is false. A full worked suite is under Dependency graph."
-
-[[part.section.entry]]
-id = "assert-basics"
-title = "assert with a message"
-aliases = ["assert", "test case", "AssertionError", "write tests", "check result", "assert message"]
-code = ["syntax/testing.py:demo_assert"]
-gotcha = "Never wrap both parts in parentheses: `assert (x == 1, \"msg\")` asserts a non-empty tuple, so it always passes. `python -O` skips asserts, so validate real input with `raise ValueError`."
-
-[[part.section.entry]]
-id = "assert-shapes"
-title = "What to compare"
-aliases = ["any order", "assert sorted", "assert in", "assert not in", "float equality", "is not None", "assert cache"]
-code = ["syntax/testing.py:demo_assert_shapes"]
-gotcha = "Compare with `==`, not `is`, except for `None`, `True` and `False`."
-
-[[part.section.entry]]
-id = "assert-raises"
-title = "Test that code raises"
-aliases = ["expect error", "assert raises", "test exception", "test cycle", "negative test"]
-code = ["syntax/testing.py:demo_assert_raises"]
-gotcha = "Without the `else`, the test passes silently when nothing raises. In `unittest`, the same check is `with self.assertRaises(ValueError):`."
-
-[[part.section.entry]]
-id = "edge-cases"
-title = "Edge cases to test"
-aliases = ["edge cases", "corner cases", "what to test", "test plan", "boundary"]
-
-[part.section.entry.table]
-header = ["Case", "Try"]
-rows = [
-  ["Empty", "`[]`, `\"\"`, `{}`, a key that was never set"],
-  ["One item", "`[5]`, a single plain cell"],
-  ["Duplicates", "`[2, 2]`, `=A1+A1`, a diamond (two paths to one node)"],
-  ["Negatives and zero", "`-10`, `0`, dividing by zero"],
-  ["Overwrite", "Set the same key twice, then read everything downstream"],
-  ["Invalid input", "Cycles, self-reference, bad strings: assert it raises"],
-  ["State after a failure", "A rejected write must leave every value unchanged"],
-  ["Large", "n = 10^5 for speed, a 2,000-deep chain for recursion"],
 ]
 
 [[part]]
@@ -1431,3 +1520,131 @@ code = ["algorithms/bits.py:single_number"]
 time = "O(n)"
 space = "O(1)"
 gotcha = "`x ^ x == 0` and `x ^ 0 == x`, so pairs cancel. Missing number: XOR every index and every value."
+
+# ---------------------------------------------------------------------
+[[part]]
+id = "testing-part"
+title = "Testing"
+
+[[part.section]]
+id = "unittest"
+title = "unittest"
+intro = "`import unittest`, part of the standard library. Run every test with `python3 -m unittest`, or one file with `python3 -m unittest test_pantry`. The suite below is a real test file that runs in this site's own test run."
+
+[[part.section.entry]]
+id = "first-test-file"
+title = "A test file from scratch"
+aliases = ["write a test", "first test", "test file", "how to start testing", "unittest", "TestCase", "setUp", "assertEqual", "test_ prefix", "fresh state per test", "test naming", "python -m unittest"]
+code = ["testing/test_pantry.py:PantryError", "testing/test_pantry.py:Pantry", "testing/test_pantry.py:PantryTests"]
+use_when = "Any class with logic: write the test right after each method, one test method per behaviour."
+gotcha = "Name the file `test_something.py` and each method `test_...`, or discovery skips it. `assertEqual(actual, expected)` shows both values when it fails, which a bare `assert` doesn't. `setUp` runs before every test on a brand-new instance, so tests can't leak state into each other. If code under test raises unexpectedly, the test fails with the traceback; you don't need `try` for that."
+
+[[part.section.entry]]
+id = "testcase"
+title = "What a TestCase class gives you"
+aliases = ["TestCase", "test class", "group tests", "setUp", "tearDown", "setUpClass", "fixtures", "fresh instance", "test isolation", "@Suite", "describe", "skip test"]
+
+[part.section.entry.table]
+header = ["Feature", "How", "Why it matters"]
+rows = [
+  ["Grouping", "Put related `test_` methods in one `class ...Tests(unittest.TestCase)`", "The report groups them under the class name"],
+  ["Shared setup", "`def setUp(self): self.pantry = Pantry()`", "Every test starts from the same known state without repeating it"],
+  ["Fresh state per test", "unittest makes a NEW instance of the class for every test method", "One test's data never leaks into another, so order doesn't matter"],
+  ["Teardown", "`tearDown(self)` after each test, or `self.addCleanup(fn)`", "Close files or undo changes even when the test fails"],
+  ["Once per class", "`@classmethod def setUpClass(cls)`", "Expensive setup, shared read-only by every test"],
+  ["Skipping", "`@unittest.skip(\"reason\")`, `@unittest.skipIf(cond, \"reason\")`", "Turn a test off with a visible reason"],
+  ["pytest equivalent", "Plain `def test_...()` functions, with `@pytest.fixture` for setup", "Less boilerplate, the same idea"],
+]
+
+[[part.section.entry]]
+id = "checking-errors"
+title = "Checking that code raises"
+aliases = ["assertRaises", "assertRaisesRegex", "test raises", "expect exception", "pytest.raises", "check error message", "caught.exception"]
+
+[part.section.entry.table]
+header = ["Goal", "unittest", "pytest"]
+rows = [
+  ["This exception type is raised", "`with self.assertRaises(PantryError): pantry.add(\"x\", 0)`", "`with pytest.raises(PantryError): ...`"],
+  ["...with a matching message", "`with self.assertRaisesRegex(PantryError, \"got 0\"): ...`", "`with pytest.raises(PantryError, match=\"got 0\"): ...`"],
+  ["Inspect the exception", "`with self.assertRaises(E) as caught: ...` then `caught.exception`", "`with pytest.raises(E) as info: ...` then `info.value`"],
+  ["Nothing is raised", "Just call it: an unexpected exception fails the test", "The same"],
+  ["State is unchanged after a rejected call", "Check the state right after the `with` block", "The same"],
+]
+
+[[part.section.entry]]
+id = "exceptions-in-tests"
+title = "Exceptions inside tests"
+aliases = ["try in tests", "try except in tests", "setup raises", "unexpected exception", "errors vs failures", "assert in tests"]
+
+[part.section.entry.table]
+header = ["Situation", "Write", "What happens"]
+rows = [
+  ["Setup calls code that should succeed", "Call it directly, with no `try`", "If it raises, the test is reported as an ERROR with the traceback"],
+  ["Checking that code DOES raise", "`with self.assertRaises(E): ...`", "Passes only for that exception type (or a subclass)"],
+  ["A value later checks depend on", "`self.assertIsNotNone(x)` first", "Stops this test with a clear message instead of an `AttributeError` later"],
+  ["Avoid", "`try: ... except Exception: pass` in a test", "It hides the very failure you want to see"],
+]
+
+[[part.section.entry]]
+id = "parameterized-tests"
+title = "Parameterized tests: subTest & parametrize"
+aliases = ["subTest", "parametrize", "pytest.mark.parametrize", "parameterized test", "test many inputs", "test cases", "table driven test", "data driven test", "arguments"]
+
+[part.section.entry.table]
+header = ["Goal", "unittest", "pytest"]
+rows = [
+  ["Same check for several inputs", "`for n in (0, -1): with self.subTest(n=n): ...`", "`@pytest.mark.parametrize(\"n\", [0, -1])` on `def test_rejects(n)`"],
+  ["Input with its expected result", "`for given, want in [(1, 2), (2, 3)]: with self.subTest(given=given): ...`", "`@pytest.mark.parametrize(\"given, want\", [(1, 2), (2, 3)])`"],
+  ["Every combination of two lists", "Two nested `for` loops inside `subTest`", "Stack two `@pytest.mark.parametrize` decorators"],
+  ["What the report shows", "Each failing value separately, and the rest still run", "Each value as its own test case"],
+]
+
+[[part.section]]
+id = "assert-testing"
+title = "Testing with assert"
+intro = "`assert condition, \"message\"` does nothing when the condition is true and raises `AssertionError(message)` when it is false. A full worked suite is under Dependency graph."
+
+[[part.section.entry]]
+id = "assert-basics"
+title = "assert with a message"
+aliases = ["assert", "test case", "AssertionError", "write tests", "check result", "assert message"]
+code = ["syntax/testing.py:demo_assert"]
+gotcha = "Never wrap both parts in parentheses: `assert (x == 1, \"msg\")` asserts a non-empty tuple, so it always passes. `python -O` skips asserts, so validate real input with `raise ValueError`."
+
+[[part.section.entry]]
+id = "assert-shapes"
+title = "What to compare"
+aliases = ["any order", "assert sorted", "assert in", "assert not in", "float equality", "is not None", "assert cache"]
+code = ["syntax/testing.py:demo_assert_shapes"]
+gotcha = "Compare with `==`, not `is`, except for `None`, `True` and `False`."
+
+[[part.section.entry]]
+id = "assert-raises"
+title = "Test that code raises"
+aliases = ["expect error", "assert raises", "test exception", "test cycle", "negative test"]
+code = ["syntax/testing.py:demo_assert_raises"]
+gotcha = "Without the `else`, the test passes silently when nothing raises. In `unittest`, the same check is `with self.assertRaises(ValueError):`."
+
+[[part.section.entry]]
+id = "edge-cases"
+title = "Edge cases to test"
+aliases = ["edge cases", "corner cases", "what to test", "test plan", "boundary"]
+
+[part.section.entry.table]
+header = ["Case", "Try"]
+rows = [
+  ["Empty", "`[]`, `\"\"`, `{}`, a key that was never set"],
+  ["One item", "`[5]`, a single plain cell"],
+  ["Duplicates", "`[2, 2]`, `=A1+A1`, a diamond (two paths to one node)"],
+  ["Negatives and zero", "`-10`, `0`, dividing by zero"],
+  ["Overwrite", "Set the same key twice, then read everything downstream"],
+  ["Invalid input", "Cycles, self-reference, bad strings: assert it raises, then that nothing was stored"],
+  ["Many, out of order", "Add three in shuffled order and compare the whole list"],
+  ["Ties", "Two items with the same sort key: decide which comes first and test it"],
+  ["Exactness", "Money totals in integer cents: `10 + 20 == 30`, never floats"],
+  ["Fixed inputs", "Dates from `datetime.fromtimestamp(0, tz=timezone.utc)`, never `datetime.now()`"],
+  ["Encapsulation", "Change a returned copy and check the original didn't move"],
+  ["Derived values", "After every add, edit and delete, recheck the totals"],
+  ["State after a failure", "A rejected write must leave every value unchanged"],
+  ["Large", "n = 10^5 for speed, a 2,000-deep chain for recursion"],
+]

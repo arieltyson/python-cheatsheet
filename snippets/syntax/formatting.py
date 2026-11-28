@@ -99,7 +99,10 @@ def demo_rounding() -> None:
     assert round(1234.5678, -2) == 1200.0
     # 2.675 is stored as 2.67499999..., so it rounds down
     assert round(2.675, 2) == 2.67
-    # int() truncates toward zero; floor and ceil do not
+    # int() drops the fraction (toward zero); it never rounds
+    assert int(2.9) == 2
     assert int(-2.9) == -2
+    assert int(0.30) == 0
+    assert int(round(0.30 * 100)) == 30  # dollars to cents
     assert math.floor(-2.9) == -3
     assert math.ceil(2.1) == 3

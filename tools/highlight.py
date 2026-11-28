@@ -144,11 +144,15 @@ def highlight_inline(source: str) -> str:
         return html.escape(source, quote=False)
     parts: list[str] = []
     position = 0
+    previous = ""
     for tok in tokens:
+        after_at, previous = previous == "@", tok.string
         if tok.type != token.NAME or tok.start[0] != 1:
             continue
         start, end = tok.start[1], tok.end[1]
-        if tok.string in KEYWORDS:
+        if after_at:
+            css_class = "fn"  # a decorator, such as @dataclass
+        elif tok.string in KEYWORDS:
             css_class = "kw"
         elif tok.string in BUILTINS:
             css_class = "bi"

@@ -17,8 +17,10 @@ ALLOWED_IMPORTS = {
     "heapq",
     "itertools",
     "math",
+    "operator",
     "threading",
     "time",
+    "unittest",
 }
 MAX_LINE_LENGTH = 72
 MAX_FUNCTION_LINES = 25
